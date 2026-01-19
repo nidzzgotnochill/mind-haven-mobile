@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Timer - Pomodoro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+  <link href="mobile-responsive.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --glass-bg: rgba(20, 20, 25, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent-pink: #f472b6;
+            --kaizen-orange: #fb923c;
+            --forest-green: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--text-main);
+            transition: background-image 0.5s ease-in-out;
+            background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop');
+        }
+
+        /* Cinematic Grain */
+        body::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 5;
+            mix-blend-mode: overlay;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            z-index: 100;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .back-btn span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* POMODORO CARD */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(120%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            padding: 40px 60px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 760px;
+            max-width: 95%;
+            transition: all 0.5s ease;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 700;
+        }
+
+        .task-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .task-input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .task-input:focus {
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .task-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+        }
+
+        .timer-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        .timer-display {
+            font-size: 14rem;
+            font-weight: 800;
+            line-height: 0.85;
+            margin: 20px 0 40px 0;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -8px;
+        }
+
+        .tree-container {
+            width: 80px;
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        .pixel-tree {
+            font-size: 4rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            transition: 0.5s;
+        }
+
+        .btn-main {
+            background: white;
+            color: #0f172a;
+            border: none;
+            padding: 22px 0;
+            width: 100%;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            background: #f8fafc;
+        }
+
+        .btn-main.running {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .controls-grid {
+            width: 100%;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .music-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-style {
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            width: 150px;
+        }
+
+        .dropdown-style option {
+            background: #1a1a1a;
+            color: #ccc;
+        }
+
+        .nature-toggles {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nature-btn-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nature-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nature-btn.active {
+            background: white;
+            color: #1a1a1a;
+        }
+
+        .vol-slider-container {
+            position: absolute;
+            bottom: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 100px;
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 15px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+        }
+
+        .nature-btn-group:hover .vol-slider-container {
+            display: flex;
+        }
+
+        .vol-slider {
+            writing-mode: bt-lr;
+            -webkit-appearance: slider-vertical;
+            appearance: slider-vertical;
+            width: 6px;
+            height: 80px;
+            cursor: pointer;
+        }
+
+        .japanese-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: -10px;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .jp-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jp-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .jp-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .jp-desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .btn-kaizen:hover {
+            border-color: var(--kaizen-orange);
+        }
+
+        .btn-kaizen:hover .jp-title {
+            color: var(--kaizen-orange);
+        }
+
+        .btn-shinrin:hover {
+            border-color: var(--forest-green);
+        }
+
+        .btn-shinrin:hover .jp-title {
+            color: var(--forest-green);
+        }
+
+        .top-icons {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .icon-btn {
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Background Picker */
+        .bg-picker {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 50;
+        }
+
+        .bg-dot {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-dot:hover {
+            transform: scale(1.1);
+            border-color: white;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .modal-card {
+            background: #ffffff;
+            color: #333;
+            width: 600px;
+            max-width: 90%;
+            height: 700px;
+            max-height: 90vh;
+            border-radius: 20px;
+            padding: 0;
+            position: relative;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            font-size: 1.2rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .modal-content {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .report-tabs {
+            display: flex;
+            gap: 20px;
+        }
+
+        .report-tab {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #aaa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .report-tab:hover {
+            color: #888;
+        }
+
+        .report-tab.active {
+            color: #f472b6;
+        }
+
+        .summary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .summary-card {
+            background: #fdf2f8;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .sum-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            display: block;
+        }
+
+        .sum-label {
+            font-size: 0.75rem;
+            color: #f472b6;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .chart-wrapper {
+            height: 250px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .todo-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Outfit';
+            font-size: 1rem;
+        }
+
+        .todo-add-btn {
+            background: #f472b6;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .todo-add-btn:hover {
+            background: #ec4899;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .todo-check {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #f472b6;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .todo-item.done .todo-text {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        .todo-del {
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .todo-del:hover {
+            color: #f87171;
+            transform: scale(1.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .glass-card {
+                padding: 30px 40px;
+            }
+
+            .timer-display {
+                font-size: 8rem;
+            }
+
+            .back-btn {
+                top: 20px;
+                left: 20px;
+                font-size: 1.2rem;
+            }
+
+            .top-icons {
+                top: 20px;
+                right: 20px;
+            }
+
+            .bg-picker {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .modal-card {
+                height: 600px;
+            }
+        }
+    </style>
+    <style>
+        .mindful-buddies {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 150px;
+            height: 110px;
+            z-index: 5;
+            opacity: 0.9;
+            pointer-events: none;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><g transform="translate(80, 100)"><ellipse cx="0" cy="0" rx="35" ry="45" fill="%23ffc9b5" /><path d="M-35,-15 Q0,-45 35,-15" fill="%235a6b56" /><ellipse cx="-20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(-20)" /><ellipse cx="20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(20)" /><path d="M-10,5 Q-5,8 0,5 M10,5 Q15,8 20,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-5,20 Q5,28 15,20" stroke="%23374151" stroke-width="2" fill="none" /></g><g transform="translate(200, 110)"><ellipse cx="0" cy="0" rx="38" ry="48" fill="%23ffc9b5" /><path d="M-38,-15 Q0,-48 38,-15" fill="%235a6b56" /><ellipse cx="-22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(-15)" /><ellipse cx="22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(15)" /><path d="M-12,5 Q-6,8 0,5 M12,5 Q18,8 24,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-6,22 Q6,30 18,22" stroke="%23374151" stroke-width="2" fill="none" /></g><circle cx="40" cy="40" r="10" fill="%23d4c5e8" opacity="0.5" /><circle cx="260" cy="160" r="8" fill="%23d4c5e8" opacity="0.5" /></svg>') no-repeat center/contain;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes fadeInBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .affirmation-bubble {
+            position: fixed;
+            bottom: 145px;
+            left: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 16px 22px;
+            max-width: 260px;
+            z-index: 5;
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeInBounce 1.2s ease-out 0.8s both;
+        }
+
+        [data-theme="dark"] .affirmation-bubble {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .affirmation-bubble p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- BACK BUTTON -->
+    <a href="journey.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back</span>
+    </a>
+
+
+    <div class="mindful-buddies"></div>
+    <div class="affirmation-bubble">
+        <p>✨ Focus time! You got this! ⏱️ ✨</p>
+    </div>
+
+    <!-- POMODORO TIMER -->
+    <div class="glass-card">
+        <div class="top-icons">
+            <i class="fas fa-check-square icon-btn" onclick="openTodo()" title="Tasks"></i>
+            <i class="fas fa-chart-bar icon-btn" onclick="openReport()" title="Stats"></i>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchMode('pomo')" id="btn-pomo">Focus</button>
+            <button class="tab-btn" onclick="switchMode('short')" id="btn-short">Short</button>
+            <button class="tab-btn" onclick="switchMode('long')" id="btn-long">Long</button>
+        </div>
+
+        <div class="timer-row">
+            <div class="timer-display" id="timer">25:00</div>
+            <div id="tree-container"><span id="tree-icon" class="pixel-tree">🌱</span></div>
+        </div>
+
+        <div class="task-container">
+            <input type="text" class="task-input" id="mainTaskInput" placeholder="What are you working on?" />
+        </div>
+
+        <div class="japanese-controls">
+            <button class="jp-btn btn-kaizen" onclick="activateKaizen()">
+                <span class="jp-title"><i class="fas fa-bolt"></i> Kaizen</span>
+                <span class="jp-desc">Overcome laziness. Start with 1 min.</span>
+            </button>
+            <button class="jp-btn btn-shinrin" onclick="activateShinrin()">
+                <span class="jp-title"><i class="fas fa-leaf"></i> Shinrin-yoku</span>
+                <span class="jp-desc">Lower stress. Forest immersion.</span>
+            </button>
+        </div>
+
+        <button class="btn-main" id="mainBtn" onclick="toggleTimer()">Start Session</button>
+
+        <div class="controls-grid">
+            <div class="music-wrapper">
+                <i class="fas fa-music"></i>
+                <select class="dropdown-style" id="trackSelect" onchange="changeTrack()">
+                    <option value="none">No Music</option>
+                    <option value="lofi1">Lofi Chill</option>
+                    <option value="lofi2">Lofi Jazz</option>
+                </select>
+                <i class="fas fa-play" id="playIcon" onclick="toggleMusic()"
+                    style="cursor:pointer; margin-left:auto;"></i>
+            </div>
+
+            <div class="nature-toggles">
+                <div class="nature-btn-group">
+                    <button class="nature-btn" onclick="toggleNature('rain', this)"><i
+                            class="fas fa-cloud-rain"></i></button>
+                    <div class="vol-slider-container">
+                        <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.5" orient="vertical"
+                            oninput="setVolume('rain', this.value)" />
+                    </div>
+                </div>
+                <div class="nature-btn-group">
+                    <button class="nature-btn" onclick="toggleNature('forest', this)"><i
+                            class="fas fa-tree"></i></button>
+                    <div class="vol-slider-container">
+                        <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.5" orient="vertical"
+                            oninput="setVolume('forest', this.value)" />
+                    </div>
+                </div>
+                <div class="nature-btn-group">
+                    <button class="nature-btn" onclick="toggleNature('fire', this)"><i class="fas fa-fire"></i></button>
+                    <div class="vol-slider-container">
+                        <input type="range" class="vol-slider" min="0" max="1" step="0.1" value="0.5" orient="vertical"
+                            oninput="setVolume('fire', this.value)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND PICKER -->
+    <div class="bg-picker">
+        <div class="bg-dot"
+            onclick="changeBg('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop')"
+            style="background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=100&auto=format&fit=crop');">
+        </div>
+        <div class="bg-dot"
+            onclick="changeBg('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=2070&auto=format&fit=crop')"
+            style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=100&auto=format&fit=crop');">
+        </div>
+        <div class="bg-dot"
+            onclick="changeBg('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=2070&auto=format&fit=crop')"
+            style="background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?q=80&w=100&auto=format&fit=crop');">
+        </div>
+        <div class="bg-dot"
+            onclick="changeBg('https://images.unsplash.com/photo-1493314894560-5c412a56c17c?q=80&w=2070&auto=format&fit=crop')"
+            style="background-image: url('https://images.unsplash.com/photo-1493314894560-5c412a56c17c?q=80&w=100&auto=format&fit=crop');">
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="report-tabs">
+                    <div class="report-tab active" onclick="switchView('summary', this)">Summary</div>
+                    <div class="report-tab" onclick="switchView('detail', this)">Log</div>
+                </div>
+                <i class="fas fa-times close-modal" onclick="closeModals()"></i>
+            </div>
+            <div class="modal-content">
+                <div id="view-summary">
+                    <div class="summary-row">
+                        <div class="summary-card">
+                            <span class="sum-val" id="disp-hours">0.0</span>
+                            <span class="sum-label">Hours</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="sum-val" id="disp-days">0</span>
+                            <span class="sum-label">Days</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="sum-val" id="disp-streak">0</span>
+                            <span class="sum-label">Streak</span>
+                        </div>
+                    </div>
+                    <h4>Focus Activity</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+                <div id="view-detail" style="display:none">
+                    <ul id="logList" style="list-style:none"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="todoModal">
+        <div class="modal-card" style="height: 600px;">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-check-circle" style="color:#f472b6;"></i> Tasks
+                </div>
+                <i class="fas fa-times close-modal" onclick="closeModals()"></i>
+            </div>
+            <div class="modal-content">
+                <div class="todo-input-row">
+                    <input type="text" class="todo-input" id="newTodoInput" placeholder="Add a new task..."
+                        onkeypress="if(event.key==='Enter') addTodo()">
+                    <button class="todo-add-btn" onclick="addTodo()">Add</button>
+                </div>
+                <ul class="todo-list" id="todoListUI"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO FILES -->
+    <audio id="music-lofi1" loop
+        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
+    <audio id="music-lofi2" loop
+        src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-chill-medium-version-159456.mp3"></audio>
+    <audio id="nature-rain" loop src="https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg"></audio>
+    <audio id="nature-forest" loop src="https://actions.google.com/sounds/v1/ambiences/forest.ogg"></audio>
+    <audio id="nature-fire" loop src="https://actions.google.com/sounds/v1/ambiences/fireplace.ogg"></audio>
+    <audio id="alarm-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
+    <script>
+        // POMODORO LOGIC
+        const modes = { pomo: 25, short: 5, long: 15, kaizen: 1 };
+        let currentMode = 'pomo';
+        let timeLeft = modes.pomo * 60;
+        let timerId = null;
+        let isRunning = false;
+        let sessionData = JSON.parse(localStorage.getItem('pomoUlt')) || {
+            totalMinutes: 0,
+            daysAccessed: 1,
+            streak: 0,
+            lastDate: new Date().toISOString().split('T')[0],
+            daily: {},
+            logs: [],
+            todos: []
+        };
+
+        const timerEl = document.getElementById('timer');
+        const mainBtn = document.getElementById('mainBtn');
+        const treeIcon = document.getElementById('tree-icon');
+        const playIcon = document.getElementById('playIcon');
+
+        // Load saved background
+        const savedBg = localStorage.getItem('pomoBg');
+        if (savedBg) {
+            document.body.style.backgroundImage = `url(${savedBg})`;
+        }
+
+        function updateDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            timerEl.innerText = `${m}:${s}`;
+            document.title = isRunning ? `${m}:${s} - Focus` : 'Focus Timer';
+
+            const totalTime = modes[currentMode] * 60;
+            const progress = 1 - (timeLeft / totalTime);
+
+            if (progress < 0.1) {
+                treeIcon.innerText = '🌱';
+            } else if (progress < 0.5) {
+                treeIcon.innerText = '🌿';
+            } else if (progress < 0.9) {
+                treeIcon.innerText = '🌳';
+            } else {
+                treeIcon.innerText = '🌲';
+            }
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerId);
+                isRunning = false;
+                mainBtn.innerText = 'Resume';
+                mainBtn.classList.remove('running');
+            } else {
+                if (timeLeft === 0) {
+                    timeLeft = modes[currentMode] * 60;
+                }
+
+                timerId = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        completeSession();
+                    }
+                }, 1000);
+
+                isRunning = true;
+                mainBtn.innerText = 'Pause';
+                mainBtn.classList.add('running');
+            }
+        }
+
+        function completeSession() {
+            clearInterval(timerId);
+            isRunning = false;
+
+            const alarmSound = document.getElementById('alarm-sound');
+            alarmSound.play().catch(e => console.log('Audio play failed:', e));
+
+            mainBtn.innerText = 'Start';
+            mainBtn.classList.remove('running');
+
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            if (currentMode === 'pomo') {
+                logSession(modes.pomo);
+            }
+
+            alert('🎉 Session Complete! Great Focus!');
+            timeLeft = modes[currentMode] * 60;
+            updateDisplay();
+        }
+
+        function switchMode(mode) {
+            if (isRunning) {
+                if (!confirm('Timer is running. Switch mode anyway?')) {
+                    return;
+                }
+                toggleTimer();
+            }
+
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+            if (mode !== 'kaizen') {
+                document.getElementById(`btn-${mode}`).classList.add('active');
+            }
+
+            timeLeft = modes[mode] * 60;
+            updateDisplay();
+        }
+
+        function activateKaizen() {
+            switchMode('kaizen');
+            document.getElementById('mainTaskInput').value = '⚡ Kaizen - Just 1 minute start';
+            setTimeout(() => toggleTimer(), 100);
+        }
+
+        function activateShinrin() {
+            changeBg('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1920');
+
+            const forest = document.getElementById('nature-forest');
+            const rain = document.getElementById('nature-rain');
+
+            if (forest.paused) {
+                forest.play().catch(e => console.log('Forest audio failed:', e));
+                document.querySelector('.nature-btn:nth-child(1)').classList.add('active');
+            }
+            if (rain.paused) {
+                rain.play().catch(e => console.log('Rain audio failed:', e));
+                document.querySelector('.nature-btn:nth-child(1)').parentElement.previousElementSibling.querySelector('.nature-btn').classList.add('active');
+            }
+
+            switchMode('long');
+            document.getElementById('mainTaskInput').value = '🍃 Shinrin-yoku - Forest Bathing';
+        }
+
+        function changeBg(url) {
+            document.body.style.backgroundImage = `url(${url})`;
+            localStorage.setItem('pomoBg', url);
+        }
+
+        function logSession(mins) {
+            const today = new Date().toISOString().split('T')[0];
+
+            if (!sessionData.daily[today]) {
+                sessionData.daily[today] = 0;
+            }
+            sessionData.daily[today] += mins;
+            sessionData.totalMinutes += mins;
+
+            const taskName = document.getElementById('mainTaskInput').value || 'Focus Session';
+            sessionData.logs.unshift({
+                name: taskName,
+                date: new Date().toLocaleString(),
+                duration: mins
+            });
+
+            localStorage.setItem('pomoUlt', JSON.stringify(sessionData));
+        }
+
+        // UI & AUDIO FUNCTIONS
+        function openTodo() {
+            document.getElementById('todoModal').style.display = 'flex';
+            renderTodos();
+        }
+
+        function addTodo() {
+            const input = document.getElementById('newTodoInput');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            sessionData.todos.push({ text: text, done: false });
+            input.value = '';
+            saveAndRenderTodos();
+        }
+
+        function toggleTodo(index) {
+            sessionData.todos[index].done = !sessionData.todos[index].done;
+            saveAndRenderTodos();
+        }
+
+        function deleteTodo(index) {
+            if (confirm('Delete this task?')) {
+                sessionData.todos.splice(index, 1);
+                saveAndRenderTodos();
+            }
+        }
+
+        function saveAndRenderTodos() {
+            localStorage.setItem('pomoUlt', JSON.stringify(sessionData));
+            renderTodos();
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todoListUI');
+
+            if (sessionData.todos.length === 0) {
+                list.innerHTML = '<li style="text-align:center; color:#aaa; padding:40px;">No tasks yet. Add one above!</li>';
+                return;
+            }
+
+            list.innerHTML = sessionData.todos.map((todo, i) => `
+                <li class="todo-item ${todo.done ? 'done' : ''}">
+                    <input type="checkbox" class="todo-check" ${todo.done ? 'checked' : ''} onclick="toggleTodo(${i})">
+                    <span class="todo-text">${todo.text}</span>
+                    <i class="fas fa-trash todo-del" onclick="deleteTodo(${i})"></i>
+                </li>
+            `).join('');
+        }
+
+        let chart = null;
+
+        function openReport() {
+            document.getElementById('reportModal').style.display = 'flex';
+            document.getElementById('disp-hours').innerText = (sessionData.totalMinutes / 60).toFixed(1);
+            document.getElementById('disp-days').innerText = sessionData.daysAccessed;
+            document.getElementById('disp-streak').innerText = sessionData.streak;
+
+            const ctx = document.getElementById('activityChart').getContext('2d');
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const labels = [];
+            const data = [];
+
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const str = d.toISOString().split('T')[0];
+                labels.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+                data.push((sessionData.daily[str] || 0) / 60);
+            }
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        data,
+                        backgroundColor: '#f472b6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: {
+                            grid: { color: '#f0f0f0' },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const logList = document.getElementById('logList');
+
+            if (sessionData.logs.length === 0) {
+                logList.innerHTML = '<li style="text-align:center; color:#aaa; padding:40px;">No sessions logged yet.</li>';
+            } else {
+                logList.innerHTML = sessionData.logs.map(l => `
+                    <li style="padding:10px 0; border-bottom:1px solid #eee;">
+                        <b>${l.name}</b> 
+                        <span style="float:right; color:#999;">${l.duration}m</span>
+                        <div style="font-size:0.8rem; color:#ccc;">${l.date}</div>
+                    </li>
+                `).join('');
+            }
+        }
+
+        function switchView(view, el) {
+            document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+
+            document.getElementById('view-summary').style.display = view === 'summary' ? 'block' : 'none';
+            document.getElementById('view-detail').style.display = view === 'detail' ? 'block' : 'none';
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        let currentTrack = null;
+
+        function changeTrack() {
+            const val = document.getElementById('trackSelect').value;
+
+            if (currentTrack) {
+                currentTrack.pause();
+                currentTrack.currentTime = 0;
+            }
+
+            if (val !== 'none') {
+                currentTrack = document.getElementById(`music-${val}`);
+                currentTrack.volume = 0.5;
+                currentTrack.play().catch(e => console.log('Music play failed:', e));
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                currentTrack = null;
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        function toggleMusic() {
+            if (!currentTrack) {
+                document.getElementById('trackSelect').value = 'lofi1';
+                changeTrack();
+                return;
+            }
+
+            if (currentTrack.paused) {
+                currentTrack.play().catch(e => console.log('Music play failed:', e));
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            } else {
+                currentTrack.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            }
+        }
+
+        function toggleNature(type, btn) {
+            const audio = document.getElementById(`nature-${type}`);
+
+            if (audio.paused) {
+                audio.play().catch(e => console.log(`${type} audio failed:`, e));
+                btn.classList.add('active');
+            } else {
+                audio.pause();
+                btn.classList.remove('active');
+            }
+        }
+
+        function setVolume(type, val) {
+            const audio = document.getElementById(`nature-${type}`);
+            audio.volume = val;
+
+            if (audio.paused && val > 0) {
+                audio.play().catch(e => console.log(`${type} audio failed:`, e));
+            }
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModals();
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                toggleTimer();
+            }
+        });
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+
+</html>

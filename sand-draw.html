@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="auth.js"></script>
+    <meta charset="UTF-8">
+    <title>Sand Draw | Mindful Haven</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+  <link href="mobile-responsive.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a1a;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 0.8;
+        }
+
+        .controls {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-3px);
+        }
+
+        .material-palette {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            padding: 15px 25px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .material-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            position: relative;
+        }
+
+        .material-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .material-btn.active {
+            border-color: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: scale(1.15);
+        }
+
+        .material-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.7rem;
+            color: white;
+            opacity: 0.7;
+            white-space: nowrap;
+        }
+
+        .brush-size {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brush-size label {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .brush-size input {
+            width: 120px;
+            accent-color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header-bar">
+        <a href="games.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Games</a>
+        <div style="color: white; font-weight: 700;">Sand Draw</div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="controls">
+        <button class="control-btn" onclick="clearGrid()">
+            <i class="fas fa-eraser"></i> Clear
+        </button>
+        <button class="control-btn" onclick="saveArt()">
+            <i class="fas fa-download"></i> Save
+        </button>
+    </div>
+
+    <div class="brush-size">
+        <label>Brush Size</label>
+        <input type="range" id="brushSize" min="1" max="10" value="3">
+    </div>
+
+    <div class="material-palette">
+        <div class="material-btn active" style="background: #f4a460;" data-type="sand">
+            <div class="material-label">Sand</div>
+        </div>
+        <div class="material-btn" style="background: #4a90e2;" data-type="water">
+            💧
+            <div class="material-label">Water</div>
+        </div>
+        <div class="material-btn" style="background: #8b4513;" data-type="wall">
+            🧱
+            <div class="material-label">Wall</div>
+        </div>
+        <div class="material-btn" style="background: linear-gradient(45deg, #ff6b6b, #feca57);" data-type="fire">
+            🔥
+            <div class="material-label">Fire</div>
+        </div>
+        <div class="material-btn" style="background: #2ecc71;" data-type="plant">
+            🌱
+            <div class="material-label">Plant</div>
+        </div>
+        <div class="material-btn" style="background: #95a5a6;" data-type="stone">
+            🪨
+            <div class="material-label">Stone</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Grid setup
+        const CELL_SIZE = 4;
+        let GRID_WIDTH, GRID_HEIGHT;
+        let grid = [];
+        let nextGrid = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 70;
+            GRID_WIDTH = Math.floor(canvas.width / CELL_SIZE);
+            GRID_HEIGHT = Math.floor(canvas.height / CELL_SIZE);
+            initGrid();
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Materials
+        const MATERIALS = {
+            empty: { color: '#000000', density: 0, state: 'gas' },
+            sand: { color: '#f4a460', density: 3, state: 'powder' },
+            water: { color: '#4a90e2', density: 2, state: 'liquid' },
+            wall: { color: '#8b4513', density: 999, state: 'solid' },
+            fire: { color: '#ff6b6b', density: 0, state: 'gas', life: 30 },
+            plant: { color: '#2ecc71', density: 5, state: 'solid' },
+            stone: { color: '#95a5a6', density: 10, state: 'solid' }
+        };
+
+        let currentMaterial = 'sand';
+        let brushSize = 3;
+        let isDrawing = false;
+
+        // Controls
+        document.getElementById('brushSize').addEventListener('input', (e) => {
+            brushSize = parseInt(e.target.value);
+        });
+
+        document.querySelectorAll('.material-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.material-btn.active').classList.remove('active');
+                btn.classList.add('active');
+                currentMaterial = btn.dataset.type;
+            });
+        });
+
+        // Initialize grid
+        function initGrid() {
+            grid = Array(GRID_HEIGHT).fill().map(() =>
+                Array(GRID_WIDTH).fill().map(() => ({ type: 'empty', life: 0 }))
+            );
+            nextGrid = Array(GRID_HEIGHT).fill().map(() =>
+                Array(GRID_WIDTH).fill().map(() => ({ type: 'empty', life: 0 }))
+            );
+        }
+
+        // Drawing
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseleave', () => isDrawing = false);
+        canvas.addEventListener('mousemove', handleDraw);
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDrawing = true;
+            handleDraw(e.touches[0]);
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            handleDraw(e.touches[0]);
+        });
+        canvas.addEventListener('touchend', () => isDrawing = false);
+
+        function handleDraw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+            const y = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+
+            for (let dy = -brushSize; dy <= brushSize; dy++) {
+                for (let dx = -brushSize; dx <= brushSize; dx++) {
+                    if (dx * dx + dy * dy <= brushSize * brushSize) {
+                        const nx = x + dx;
+                        const ny = y + dy;
+                        if (nx >= 0 && nx < GRID_WIDTH && ny >= 0 && ny < GRID_HEIGHT) {
+                            grid[ny][nx] = {
+                                type: currentMaterial,
+                                life: MATERIALS[currentMaterial].life || 0
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        // Physics simulation
+        function update() {
+            // Copy current grid to next
+            for (let y = 0; y < GRID_HEIGHT; y++) {
+                for (let x = 0; x < GRID_WIDTH; x++) {
+                    nextGrid[y][x] = { ...grid[y][x] };
+                }
+            }
+
+            // Process from bottom to top
+            for (let y = GRID_HEIGHT - 1; y >= 0; y--) {
+                for (let x = 0; x < GRID_WIDTH; x++) {
+                    const cell = grid[y][x];
+                    if (cell.type === 'empty') continue;
+
+                    const mat = MATERIALS[cell.type];
+
+                    // Fire behavior
+                    if (cell.type === 'fire') {
+                        cell.life--;
+                        if (cell.life <= 0) {
+                            nextGrid[y][x] = { type: 'empty', life: 0 };
+                            continue;
+                        }
+                        // Fire rises
+                        if (y > 0 && grid[y - 1][x].type === 'empty') {
+                            nextGrid[y - 1][x] = { ...cell };
+                            nextGrid[y][x] = { type: 'empty', life: 0 };
+                        }
+                        // Burn plants
+                        for (let dy = -1; dy <= 1; dy++) {
+                            for (let dx = -1; dx <= 1; dx++) {
+                                const ny = y + dy, nx = x + dx;
+                                if (ny >= 0 && ny < GRID_HEIGHT && nx >= 0 && nx < GRID_WIDTH) {
+                                    if (grid[ny][nx].type === 'plant' && Math.random() > 0.9) {
+                                        nextGrid[ny][nx] = { type: 'fire', life: 20 };
+                                    }
+                                }
+                            }
+                        }
+                        continue;
+                    }
+
+                    // Powder (sand) behavior
+                    if (mat.state === 'powder') {
+                        if (y < GRID_HEIGHT - 1) {
+                            const below = grid[y + 1][x];
+                            if (below.type === 'empty' || MATERIALS[below.type].density < mat.density) {
+                                nextGrid[y + 1][x] = { ...cell };
+                                nextGrid[y][x] = { ...below };
+                            } else {
+                                // Try diagonal
+                                const dir = Math.random() > 0.5 ? 1 : -1;
+                                const nx = x + dir;
+                                if (nx >= 0 && nx < GRID_WIDTH && grid[y + 1][nx].type === 'empty') {
+                                    nextGrid[y + 1][nx] = { ...cell };
+                                    nextGrid[y][x] = { type: 'empty', life: 0 };
+                                }
+                            }
+                        }
+                    }
+
+                    // Liquid (water) behavior
+                    if (mat.state === 'liquid') {
+                        if (y < GRID_HEIGHT - 1) {
+                            const below = grid[y + 1][x];
+                            if (below.type === 'empty' || (MATERIALS[below.type].density < mat.density && below.type !== 'wall')) {
+                                nextGrid[y + 1][x] = { ...cell };
+                                nextGrid[y][x] = { ...below };
+                            } else {
+                                // Spread horizontally
+                                const dir = Math.random() > 0.5 ? 1 : -1;
+                                const nx = x + dir;
+                                if (nx >= 0 && nx < GRID_WIDTH && grid[y][nx].type === 'empty') {
+                                    nextGrid[y][nx] = { ...cell };
+                                    nextGrid[y][x] = { type: 'empty', life: 0 };
+                                }
+                            }
+                        }
+                        // Water extinguishes fire
+                        for (let dy = -1; dy <= 1; dy++) {
+                            for (let dx = -1; dx <= 1; dx++) {
+                                const ny = y + dy, nx = x + dx;
+                                if (ny >= 0 && ny < GRID_HEIGHT && nx >= 0 && nx < GRID_WIDTH) {
+                                    if (grid[ny][nx].type === 'fire') {
+                                        nextGrid[ny][nx] = { type: 'empty', life: 0 };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Swap grids
+            [grid, nextGrid] = [nextGrid, grid];
+        }
+
+        // Render
+        function render() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let y = 0; y < GRID_HEIGHT; y++) {
+                for (let x = 0; x < GRID_WIDTH; x++) {
+                    const cell = grid[y][x];
+                    if (cell.type !== 'empty') {
+                        let color = MATERIALS[cell.type].color;
+
+                        // Add variation to sand
+                        if (cell.type === 'sand') {
+                            const variation = Math.floor(Math.random() * 20) - 10;
+                            color = `rgb(${244 + variation}, ${164 + variation}, ${96 + variation})`;
+                        }
+
+                        // Fire flicker
+                        if (cell.type === 'fire') {
+                            const hue = 0 + Math.random() * 30;
+                            color = `hsl(${hue}, 100%, ${50 + Math.random() * 20}%)`;
+                        }
+
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    }
+                }
+            }
+        }
+
+        // Game loop
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function clearGrid() {
+            initGrid();
+        }
+
+        function saveArt() {
+            const link = document.createElement('a');
+            link.download = 'falling-sand-art.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Start
+        initGrid();
+        gameLoop();
+
+    </script>
+</body>
+
+</html>

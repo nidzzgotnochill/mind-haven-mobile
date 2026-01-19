@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="auth.js"></script>
+  <meta charset="UTF-8" />
+  <title>Healing Journey | Mindful Haven</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="mobile-responsive.css" rel="stylesheet">
+  <style>
+    :root {
+      /* Light Mode */
+      --sage-gradient: linear-gradient(135deg, #c9dcc4 0%, #d4c5e8 100%);
+      --sage-dark: #5a6b56;
+      --bg-primary: #f9fafb;
+      --bg-secondary: #ffffff;
+      --text-dark: #111827;
+      --text-muted: #6b7280;
+      --accent: #6366f1;
+      --accent-soft: #eef2ff;
+      --danger: #e03d3d;
+      --success: #22c55e;
+      --warning: #eab308;
+      --border-light: #e5e7eb;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-theme="dark"] {
+      /* Dark Mode */
+      --sage-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      --sage-dark: #94a3b8;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --text-dark: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent: #8b5cf6;
+      --accent-soft: #312e81;
+      --danger: #f87171;
+      --success: #4ade80;
+      --warning: #facc15;
+      --border-light: #334155;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --glass-bg: rgba(30, 41, 59, 0.9);
+      --glass-border: rgba(71, 85, 105, 0.7);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-dark);
+      padding-bottom: 80px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 8%;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--sage-dark);
+    }
+
+    .logo i {
+      font-size: 1.3rem;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-center a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: var(--sage-dark);
+      font-weight: 600;
+    }
+
+    .nav-center a.active::after {
+      content: "";
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-right a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-right a:hover {
+      color: var(--accent);
+    }
+
+    /* Dark mode toggle */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass-bg);
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.8rem;
+    }
+
+    .theme-toggle:hover {
+      background: var(--glass-border);
+    }
+
+    .theme-toggle.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .hero {
+      padding: 40px 8% 32px;
+      background: var(--sage-gradient);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    [data-theme="dark"] .hero::before {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mindful-buddies {
+      position: absolute;
+      bottom: 20px;
+      left: 3%;
+      width: 200px;
+      height: 150px;
+      z-index: 2;
+      opacity: 1;
+      pointer-events: none;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><g transform="translate(80, 100)"><ellipse cx="0" cy="0" rx="35" ry="45" fill="%23ffc9b5" /><path d="M-35,-15 Q0,-45 35,-15" fill="%235a6b56" /><ellipse cx="-20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(-20)" /><ellipse cx="20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(20)" /><path d="M-10,5 Q-5,8 0,5 M10,5 Q15,8 20,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-5,20 Q5,28 15,20" stroke="%23374151" stroke-width="2" fill="none" /></g><g transform="translate(200, 110)"><ellipse cx="0" cy="0" rx="38" ry="48" fill="%23ffc9b5" /><path d="M-38,-15 Q0,-48 38,-15" fill="%235a6b56" /><ellipse cx="-22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(-15)" /><ellipse cx="22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(15)" /><path d="M-12,5 Q-6,8 0,5 M12,5 Q18,8 24,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-6,22 Q6,30 18,22" stroke="%23374151" stroke-width="2" fill="none" /></g><circle cx="40" cy="40" r="10" fill="%23d4c5e8" opacity="0.5" /><circle cx="260" cy="160" r="8" fill="%23d4c5e8" opacity="0.5" /></svg>') no-repeat center/contain;
+      animation: float 6s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    .affirmation-bubble {
+      position: absolute;
+      bottom: 165px;
+      left: 5%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 16px 22px;
+      max-width: 260px;
+      z-index: 3;
+      box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: fadeInBounce 1.2s ease-out 0.8s both;
+    }
+
+    [data-theme="dark"] .affirmation-bubble {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+      border-color: rgba(148, 163, 184, 0.5);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(139, 92, 246, 0.3);
+    }
+
+    .affirmation-bubble::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      width: 16px;
+      height: 16px;
+      background: inherit;
+      border-top: 2px solid rgba(255, 255, 255, 0.8);
+      border-left: 2px solid rgba(255, 255, 255, 0.8);
+      transform: rotate(45deg);
+      border-radius: 4px 0 0 0;
+    }
+
+    [data-theme="dark"] .affirmation-bubble::before {
+      border-top-color: rgba(148, 163, 184, 0.5);
+      border-left-color: rgba(148, 163, 184, 0.5);
+    }
+
+    .affirmation-bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 80px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid rgba(255, 255, 255, 0.95);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    [data-theme="dark"] .affirmation-bubble::after {
+      border-top-color: rgba(15, 23, 42, 0.98);
+    }
+
+    .affirmation-bubble p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-dark);
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes fadeInBounce {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.85);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.03);
+      }
+
+      70% {
+        transform: translateY(4px) scale(0.98);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .hero-left h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .hero-left p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass-bg);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      animation: fadeInUp 0.4s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .badge-level {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      padding: 6px 12px;
+      background: var(--glass-bg);
+      border-radius: 999px;
+      animation: fadeInUp 1s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .badge-dot.low {
+      background: var(--success);
+    }
+
+    .badge-dot.moderate {
+      background: var(--warning);
+    }
+
+    .badge-dot.high {
+      background: var(--danger);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .progress-card {
+      background: var(--glass-bg);
+      border-radius: 18px;
+      padding: 14px 16px;
+      margin-top: 8px;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 1.2s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(71, 85, 105, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #8b5cf6);
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-right {
+      background: var(--glass-bg);
+      border-radius: 24px;
+      padding: 18px 16px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 1s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .hero-right-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-right-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .mini-progress {
+      margin: 10px 0 14px;
+    }
+
+    .mini-progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .mini-progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--border-light);
+      overflow: hidden;
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--success), #10b981);
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .task-list {
+      margin-top: 8px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 10px;
+      border: 1px solid var(--border-light);
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .task-item:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    }
+
+    .task-item.completed {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: var(--success);
+      opacity: 0.8;
+    }
+
+    .task-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .circle-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .task-item.completed .circle-icon {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .task-meta {
+      text-align: right;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tag-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--border-light);
+      font-size: 0.7rem;
+      margin-top: 2px;
+    }
+
+    .main {
+      padding: 24px 8%;
+    }
+
+    .main-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1.1fr;
+      gap: 24px;
+    }
+
+    .section-card {
+      background: var(--bg-secondary);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--card-shadow);
+      margin-bottom: 18px;
+      transition: all 0.3s;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-dark);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .quick-link:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.15);
+    }
+
+    .quick-link-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+
+    .quick-link:hover .quick-link-icon {
+      transform: scale(1.1);
+    }
+
+    .quick-link-text {
+      flex: 1;
+    }
+
+    .quick-link-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .quick-link-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .day-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .day-card:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12);
+    }
+
+    .day-header {
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    .day-task {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .day-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .pill-small {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: var(--border-light);
+      color: var(--text-muted);
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .pill-small:hover {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .alert-high {
+      background: rgba(248, 113, 113, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: start;
+      gap: 8px;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .link-btn:hover {
+      color: #8b5cf6;
+      transform: translateX(2px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat-box {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .stat-box:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #818cf8, #6366f1);
+      /* Softer indigo/blue */
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #34d399, #10b981);
+      /* Softer teal/emerald */
+      width: 0;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-trend {
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      /* Prevent wrapping for longer text */
+    }
+
+    .stat-trend.up {
+      color: var(--success);
+    }
+
+    .stat-trend.down {
+      color: var(--danger);
+    }
+
+    .stat-trend.stable {
+      color: var(--text-muted);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .mood-feedback {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      font-weight: 600;
+    }
+
+    .mood-feedback.visible {
+      opacity: 1;
+    }
+
+    /* Emotional Check-in */
+    .mood-checkin {
+      background: var(--glass-bg);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid var(--glass-border);
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .mood-checkin-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+      text-align: center;
+    }
+
+    .mood-emojis {
+      display: flex;
+      justify-content: space-around;
+      gap: 5px;
+    }
+
+    .emoji-btn {
+      font-size: 1.5rem;
+      background: none;
+      border: 2px solid transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 5px;
+      transition: all 0.2s;
+      opacity: 0.6;
+    }
+
+    .emoji-btn:hover {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+
+    .emoji-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* Reflection Prompt */
+    .reflection-box {
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-light);
+    }
+
+    .reflection-prompt {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .reflection-input {
+      width: 100%;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: var(--text-dark);
+      resize: none;
+      height: 40px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .reflection-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      height: 60px;
+    }
+
+    /* Collapsible Section */
+    .collapsible-header {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .collapsible-header i.fa-chevron-down {
+      transition: transform 0.3s;
+    }
+
+    .collapsible-header.active i.fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .collapsible-content.show {
+      max-height: 1000px;
+      transition: max-height 0.5s ease-in;
+    }
+
+    .sos-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      background: var(--danger);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.5);
+      z-index: 50;
+      transition: all 0.3s;
+    }
+
+    .sos-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 40px rgba(239, 68, 68, 0.7);
+    }
+
+    @media(max-width:900px) {
+
+      .hero-inner,
+      .main-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-center {
+        display: none;
+      }
+
+      .week-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .quick-links {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo"><i class="fas fa-brain"></i> Mindful Haven</div>
+    <ul class="nav-center">
+      <li><a href="healing-journey.html" class="active">Journey</a></li>
+      <li><a href="mood-tracker.html">Mood</a></li>
+      <li><a href="journal.html">Journal</a></li>
+      <li><a href="crisis.html">Crisis</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="theme-toggle" id="themeToggle" data-theme="light">
+        <i class="fas fa-sun"></i>
+        <span>Light</span>
+      </div>
+      <a href="counselors.html"><i class="fas fa-user-md"></i> Support</a>
+    </div>
+  </nav>
+
+  <!-- Rest of HTML remains exactly the same as previous version -->
+  <section class="hero">
+    <div class="mindful-buddies"></div>
+    <div class="affirmation-bubble">
+      <p>✨ You're doing great! Every step forward counts. ✨</p>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="mood-checkin">
+          <div class="mood-checkin-title">How are you feeling right now?</div>
+          <div class="mood-emojis">
+            <button class="emoji-btn" data-mood="1" title="Very Low">😢</button>
+            <button class="emoji-btn" data-mood="2" title="Shaky">😕</button>
+            <button class="emoji-btn" data-mood="3" title="Okay">😐</button>
+            <button class="emoji-btn" data-mood="4" title="Calm">😌</button>
+            <button class="emoji-btn" data-mood="5" title="Good">😊</button>
+          </div>
+          <div class="mood-feedback" id="moodFeedback">Thanks for checking in.</div>
+        </div>
+
+        <div class="pill"><i class="fas fa-seedling"></i> The Healing Journey</div>
+        <h1>Your Personalized Path</h1>
+        <p id="heroSubtitle">Loading your data...</p>
+
+        <div class="badge-level" id="levelBadge">
+          <span class="badge-dot"></span>
+          <span></span>
+        </div>
+
+        <div class="progress-card">
+          <div class="progress-row">
+            <span>Today's activity completion</span>
+            <span id="journeyPercent">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="journeyBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-right-title">
+          <i class="fas fa-target"></i> Today's focus
+        </div>
+        <div class="hero-right-sub" id="todayFocus">A short routine to match your current stress level.</div>
+        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px; opacity:0.8;">
+          <i class="fas fa-info-circle"></i> Small routines help your nervous system feel safer.
+        </div>
+
+        <div class="mini-progress">
+          <div class="mini-progress-label">
+            <span>Activities completed</span>
+            <span id="todayPercent">0%</span>
+          </div>
+          <div class="mini-progress-bar">
+            <div class="mini-progress-fill" id="todayBar"></div>
+          </div>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+        <div class="reflection-box">
+          <div class="reflection-prompt">What helped you feel even slightly better today?</div>
+          <textarea class="reflection-input" id="reflectionInput"
+            placeholder="A small win or a calm moment..."></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main">
+    <div class="main-inner">
+      <div>
+        <section class="section-card">
+          <div class="section-title"><i class="fas fa-compass"></i> Wellness Tools</div>
+          <div class="section-sub">Use these anytime — there’s no right order.</div>
+
+          <div class="quick-links">
+            <a href="mood-tracker.html" class="quick-link">
+              <div class="quick-link-icon"><i class="fas fa-heart"></i></div>
+              <div class="quick-link-text">
+                <div class="quick-link-title">Mood Tracking</div>
+                <div class="quick-link-desc">Monitor emotional patterns</div>
+              </div>
+            </a>
+
+            <a href="journal.html" class="quick-link">
+              <div class="quick-link-icon"><i class="fas fa-pen"></i></div>
+              <div class="quick-link-text">
+                <div class="quick-link-title">Reflective Journal</div>
+                <div class="quick-link-desc">Process your thoughts</div>
+              </div>
+            </a>
+
+            <a href="breathing.html" class="quick-link">
+              <div class="quick-link-icon"><i class="fas fa-wind"></i></div>
+              <div class="quick-link-text">
+                <div class="quick-link-title">Breathing Exercise</div>
+                <div class="quick-link-desc">Regulate nervous system</div>
+              </div>
+            </a>
+
+            <a href="crisis.html" class="quick-link">
+              <div class="quick-link-icon"><i class="fas fa-shield-heart"></i></div>
+              <div class="quick-link-text">
+                <div class="quick-link-title">Crisis Resources</div>
+                <div class="quick-link-desc">Safety support access</div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-title collapsible-header" id="weekToggle">
+            <i class="fas fa-calendar-week"></i> Weekly Activity Plan
+            <i class="fas fa-chevron-down" style="margin-left:auto; font-size:0.9rem;"></i>
+          </div>
+          <div class="collapsible-content" id="weekContent">
+            <div class="section-sub" style="margin-top:10px;">Structured activities based on your assessment</div>
+            <div class="week-grid" id="weekPlan"></div>
+            <div
+              style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-muted);">
+              <span id="weekStats">Weekly engagement: 0/7 days</span>
+              <a href="#" id="regenPlan" class="link-btn"><i class="fas fa-rotate"></i> Generate new plan</a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div>
+        <section class="section-card">
+          <div class="section-title"><i class="fas fa-chart-line"></i> Progress Insights</div>
+          <div class="section-sub">Therapeutic activity tracking</div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-number">
+                <span id="totalTasks">0</span>
+              </div>
+              <div class="stat-label">Activities completed</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">
+                <span id="moodCheckins">0</span>
+                <span id="moodTrend" class="stat-trend"></span>
+              </div>
+              <div class="stat-label">Mood check-ins</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">
+                <span id="journalEntries">0</span>
+              </div>
+              <div class="stat-label">Journal entries</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">
+                <span id="statsTrend" class="stat-trend stable">stable</span>
+              </div>
+              <div class="stat-label">Stress Trend</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-title"><i class="fas fa-user-circle"></i> Assessment Profile</div>
+          <div class="section-sub">Your personalization data</div>
+          <div class="pill-row" id="profilePills"></div>
+          <a href="assessment.html" class="link-btn"><i class="fas fa-pen"></i> Retake assessment</a>
+        </section>
+
+        <section class="section-card">
+          <div class="section-title"><i class="fas fa-shield-alt"></i> Safety Resources</div>
+          <div id="safetyBlock"></div>
+          <a href="crisis.html" class="link-btn"><i class="fas fa-phone-volume"></i> View crisis hotlines</a>
+          <a href="counselors.html" class="link-btn"><i class="fas fa-user-md"></i> Find professional support</a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <button class="sos-btn" onclick="window.location.href='crisis.html'" title="Emergency Support">SOS</button>
+
+  <script>
+    // Dark mode functionality
+    function initTheme() {
+      const savedTheme = localStorage.getItem('mh_theme') || 'light';
+      const html = document.documentElement;
+      html.setAttribute('data-theme', savedTheme);
+
+      const toggle = document.getElementById('themeToggle');
+      const icon = toggle.querySelector('i');
+      const text = toggle.querySelector('span');
+
+      if (savedTheme === 'dark') {
+        toggle.classList.add('active');
+        icon.className = 'fas fa-moon';
+        text.textContent = 'Dark';
+      } else {
+        icon.className = 'fas fa-sun';
+        text.textContent = 'Light';
+      }
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', function () {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('mh_theme', newTheme);
+
+      const icon = this.querySelector('i');
+      const text = this.querySelector('span');
+
+      if (newTheme === 'dark') {
+        this.classList.add('active');
+        icon.className = 'fas fa-moon';
+        text.textContent = 'Dark';
+      } else {
+        this.classList.remove('active');
+        icon.className = 'fas fa-sun';
+        text.textContent = 'Light';
+      }
+    });
+
+    // Initialize theme on load
+    initTheme();
+
+    function safeRead(key) { try { const r = localStorage.getItem(key); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+    function safeReadArray(k) { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : []; } catch { return []; } }
+    function saveData(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+    function getLevel() { const p = new URLSearchParams(window.location.search); const u = p.get("level"); if (u) return u; const s = safeRead("mh_stress_assessment"); return s && s.level ? s.level : "low"; }
+
+    const level = getLevel();
+    const profile = safeRead("mh_user_profile") || {};
+    const stress = safeRead("mh_stress_assessment") || {};
+    // Load new classification
+    const userType = localStorage.getItem("mh_user_type") || "stable";
+    const isTrauma = localStorage.getItem("mh_modifier_trauma") === "true";
+    const isLonely = localStorage.getItem("mh_modifier_loneliness") === "true";
+
+    // --- Dynamic Tool Recommendations (Ported & Enhanced) ---
+    function getRecommendedTools(uType, trauma, lonely) {
+      let tools = [];
+
+      // Base recommendations by profile
+      if (uType === "high_risk") {
+        tools.push({ name: "Crisis Support", url: "crisis.html", icon: "fa-life-ring", desc: "Immediate help resources", color: "#ef4444" });
+        tools.push({ name: "Counselor Directory", url: "counselors.html", icon: "fa-user-md", desc: "Connect with a professional", color: "#8b5cf6" });
+        tools.push({ name: "Calming Music", url: "music.html", icon: "fa-music", desc: "Soothing soundscapes", color: "#3b82f6" });
+        tools.push({ name: "Safe Space", url: "bubble-pop.html", icon: "fa-soap", desc: "Gentle sensory relief", color: "#ec4899" });
+      } else if (uType === "moderate_clinical") {
+        tools.push({ name: "Find a Therapist", url: "counselors.html", icon: "fa-user-md", desc: "Professional guidance", color: "#8b5cf6" });
+        tools.push({ name: "Mood Journal", url: "journal.html", icon: "fa-book-medical", desc: "Track your feelings", color: "#f59e0b" });
+        tools.push({ name: "Tap to Breathe", url: "tap-breathe.html", icon: "fa-lungs", desc: "Regulate anxiety", color: "#10b981" });
+        tools.push({ name: "Chat Companion", url: "chatbot2.html", icon: "fa-robot", desc: "Vent freely", color: "#6366f1" });
+      } else if (uType === "mild_distress") {
+        tools.push({ name: "Tap to Breathe", url: "tap-breathe.html", icon: "fa-lungs", desc: "Quick stress relief", color: "#10b981" });
+        tools.push({ name: "Sand Healing", url: "sand-draw.html", icon: "fa-hourglass", desc: "Creative distraction", color: "#d97706" });
+        tools.push({ name: "Yoga Flow", url: "yoga.html", icon: "fa-pray", desc: "Gentle movement", color: "#ec4899" });
+        tools.push({ name: "Focus Dot", url: "focus-dot.html", icon: "fa-dot-circle", desc: "Center your mind", color: "#8b5cf6" });
+      } else { // Stable
+        tools.push({ name: "Daily Journal", url: "journal.html", icon: "fa-pen-fancy", desc: "Practice gratitude", color: "#f59e0b" });
+        tools.push({ name: "Math Harmony", url: "math-harmony.html", icon: "fa-border-all", desc: "Mindful focus", color: "#3b82f6" });
+        tools.push({ name: "Positivity Board", url: "positivity.html", icon: "fa-sun", desc: "Daily inspiration", color: "#eab308" });
+        tools.push({ name: "Brain Training", url: "games.html", icon: "fa-brain", desc: "Sharpen your mind", color: "#6366f1" });
+      }
+
+      // Modifiers - Swap specific items to prioritize needs
+      if (lonely && uType !== "high_risk") {
+        // Ensure chatbot is present and prominent
+        if (!tools.find(t => t.url === "chatbot2.html")) {
+          tools[1] = { name: "AI Companion", url: "chatbot2.html", icon: "fa-robot", desc: "Always here to listen", color: "#6366f1" };
+        }
+      }
+
+      if (trauma) {
+        tools[tools.length - 1] = { name: "Safe Space", url: "bubble-pop.html", icon: "fa-soap", desc: "Visual calming", color: "#ec4899" };
+      }
+
+      return tools;
+    }
+
+    const recTools = getRecommendedTools(userType, isTrauma, isLonely);
+    const toolsContainer = document.querySelector('.quick-links');
+
+    // Render Enhanced Tools
+    if (toolsContainer) {
+      // Logic for reducing choices in safety-focused mode
+      let displayTools = recTools;
+      if (userType === "high_risk") {
+        // Keep the most important 3 and a "Show more" concept or just limit to keep it clean
+        displayTools = recTools.slice(0, 3);
+      }
+
+      toolsContainer.innerHTML = displayTools.map(t => `
+            <a href="${t.url}" class="quick-link">
+              <div class="quick-link-icon" style="background:${t.color}20; color:${t.color}"><i class="fas ${t.icon}"></i></div>
+              <div class="quick-link-text">
+                <div class="quick-link-title">${t.name}</div>
+                <div class="quick-link-desc">${t.desc}</div>
+              </div>
+            </a>
+        `).join('') + (userType === "high_risk" ? `<a href="games.html" class="link-btn" style="grid-column: 1 / -1; justify-content: center; margin-top: 5px;">View all tools <i class="fas fa-arrow-right"></i></a>` : "");
+    }
+
+
+    document.getElementById("heroSubtitle").textContent = typeof stress.totalScore === "number" ? "Your path is uniquely designed for your current well-being needs." : "Complete the assessment to unlock your personalized journey.";
+
+    const levelBadge = document.getElementById("levelBadge"); const dot = levelBadge.querySelector(".badge-dot"); const label = levelBadge.querySelector("span:last-child");
+    dot.classList.remove("low", "moderate", "high");
+
+    // Map User Types to Colors & Soften High Risk
+    if (userType === "high_risk") { dot.classList.add("high"); label.textContent = "Safety-Focused Path"; }
+    else if (userType === "moderate_clinical") { dot.classList.add("high"); label.textContent = "Moderate – Structured Support"; }
+    else if (userType === "mild_distress") { dot.classList.add("moderate"); label.textContent = "Mild – Early Prevention"; }
+    else { dot.classList.add("low"); label.textContent = "Stable – Growth & Maintenance"; }
+
+    const baseJourneys = {
+      low: [
+        { icon: "fa-leaf", title: "5-min gratitude reflection", time: "5 min", tag: "Reflection" },
+        { icon: "fa-walking", title: "Short walk or stretch", time: "10 min", tag: "Movement" },
+        { icon: "fa-moon", title: "Calm sleep wind-down", time: "5 min", tag: "Sleep" },
+        { icon: "fa-book-open", title: "Read 5 pages", time: "10 min", tag: "Learning" }
+      ],
+      moderate: [
+        { icon: "fa-wind", title: "Deep breathing practice", time: "5 min", tag: "Breathing" },
+        { icon: "fa-pen", title: "Thought processing journal", time: "10 min", tag: "Journaling" },
+        { icon: "fa-person-walking", title: "15-min movement", time: "15 min", tag: "Movement" },
+        { icon: "fa-bed", title: "Sleep routine & boundaries", time: "5 min", tag: "Sleep" }
+      ],
+      high: [
+        { icon: "fa-heart-pulse", title: "Grounding technique", time: "3 min", tag: "Grounding" },
+        { icon: "fa-lungs", title: "Slow breathing exercise", time: "4 min", tag: "Breath" },
+        { icon: "fa-user-friends", title: "Connect with safe person", time: "5-10 min", tag: "Connection" },
+        { icon: "fa-moon", title: "Gentle bedtime ritual", time: "5 min", tag: "Sleep" }
+      ]
+    };
+
+    function personalise(base, profession) {
+      const tasks = base.map(t => ({ ...t }));
+      const extra = {
+        student: { icon: "fa-book", title: "Study planning session", time: "5 min", tag: "Study" },
+        working_professional: { icon: "fa-briefcase", title: "Work boundary setting", time: "5-7 min", tag: "Boundary" },
+        homemaker: { icon: "fa-mug-hot", title: "Personal time block", time: "5-10 min", tag: "Self-care" },
+        entrepreneur: { icon: "fa-list-check", title: "Idea organization", time: "7 min", tag: "Clarity" },
+        healthcare: { icon: "fa-notes-medical", title: "Post-shift processing", time: "5-8 min", tag: "Processing" },
+        teacher: { icon: "fa-chalkboard-teacher", title: "Post-class decompression", time: "5 min", tag: "Reset" }
+      };
+      if (extra[profession]) tasks.unshift(extra[profession]);
+      return tasks;
+    }
+
+    const tasks = personalise(baseJourneys[level] || baseJourneys.low, profile.profession || "other");
+
+    const todayFocus = document.getElementById("todayFocus");
+    const profFocus = {
+      student: "Structured routines for academic energy management.",
+      working_professional: "Work-life separation and stress containment.",
+      homemaker: "Intentional recovery spaces within daily routine.",
+      entrepreneur: "Cognitive clarity practices for decision-making.",
+      healthcare: "Post-shift grounding and processing techniques.",
+      teacher: "Emotional regulation after classroom demands.",
+      other: "Adaptive practices for your daily rhythm."
+    };
+    const lvlTail = {
+      low: "Maintain current functioning and build resilience.",
+      moderate: "Establish structure and stress management routines.",
+      high: "Prioritize safety, grounding, and professional support."
+    };
+    todayFocus.textContent = (profFocus[profile.profession] || profFocus.other) + " " + (lvlTail[level] || "");
+
+    const taskList = document.getElementById("taskList");
+    let taskProgress = safeRead("mh_task_progress") || {};
+    const today = new Date().toISOString().split("T")[0];
+    if (!taskProgress[today]) taskProgress[today] = { completed: [] };
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((t, i) => {
+        const isCompleted = taskProgress[today].completed.includes(i);
+        const row = document.createElement("div");
+        row.className = "task-item" + (isCompleted ? " completed" : "");
+        row.innerHTML = `
+          <div class="task-main">
+            <div class="circle-icon"><i class="fas ${t.icon}"></i></div>
+            <div>
+              <div style="font-weight:600;font-size:0.85rem;">${t.title}</div>
+              <div class="tag-chip">${t.tag}</div>
+            </div>
+          </div>
+          <div class="task-meta">
+            <div>${t.time}</div>
+            <div><input type="checkbox" data-index="${i}" ${isCompleted ? "checked" : ""}> Done</div>
+          </div>`;
+        taskList.appendChild(row);
+      });
+    }
+
+    function updateProgress() {
+      const completed = taskProgress[today].completed.length;
+      const total = tasks.length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+      document.getElementById("todayPercent").textContent = percent + "%";
+      document.getElementById("todayBar").style.width = percent + "%";
+      document.getElementById("journeyPercent").textContent = percent + "%";
+      document.getElementById("journeyBar").style.width = percent + "%";
+    }
+
+    taskList.addEventListener("change", (e) => {
+      if (e.target.matches('input[type="checkbox"]')) {
+        const idx = parseInt(e.target.dataset.index, 10);
+        if (e.target.checked) {
+          if (!taskProgress[today].completed.includes(idx)) taskProgress[today].completed.push(idx);
+        } else {
+          taskProgress[today].completed = taskProgress[today].completed.filter(i => i !== idx);
+        }
+        saveData("mh_task_progress", taskProgress);
+        renderTasks();
+        updateProgress();
+        updateStats();
+      }
+    });
+
+    renderTasks(); updateProgress();
+
+    const weekPlanEl = document.getElementById("weekPlan"); const regenBtn = document.getElementById("regenPlan"); const weekStats = document.getElementById("weekStats");
+    const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    function makeWeeklyPlan(baseTasks) {
+      const plan = [];
+      for (let i = 0; i < 7; i++) {
+        const todayTasks = [];
+        const count = level === "low" ? 2 : level === "moderate" ? 3 : 2;
+        for (let j = 0; j < count; j++) {
+          const picked = baseTasks[Math.floor(Math.random() * baseTasks.length)];
+          todayTasks.push({ title: picked.title, tag: picked.tag, time: picked.time, completed: false });
+        }
+        plan.push({ day: dayNames[i], tasks: todayTasks });
+      }
+      return plan;
+    }
+
+    function saveWeeklyPlan(plan) {
+      localStorage.setItem("mh_week_plan", JSON.stringify({ level, profession: profile.profession || "other", createdAt: new Date().toISOString(), plan }));
+    }
+
+    function loadWeeklyPlan() {
+      try {
+        const raw = localStorage.getItem("mh_week_plan");
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (data.level !== level || data.profession !== (profile.profession || "other")) return null;
+        return data.plan || null;
+      } catch (e) { return null; }
+    }
+
+    function calcWeekStats(plan) {
+      let daysWithAny = 0;
+      plan.forEach(day => { if (day.tasks.some(t => t.completed)) daysWithAny++; });
+      return daysWithAny;
+    }
+
+    function renderWeeklyPlan(plan) {
+      weekPlanEl.innerHTML = "";
+      plan.forEach((day, dayIndex) => {
+        const card = document.createElement("div");
+        card.className = "day-card";
+        const header = document.createElement("div");
+        header.className = "day-header";
+        header.textContent = day.day;
+        card.appendChild(header);
+
+        day.tasks.forEach((t, taskIndex) => {
+          const row = document.createElement("div");
+          row.className = "day-task";
+          row.innerHTML = `<span>• ${t.title}</span><input type="checkbox" data-day="${dayIndex}" data-task="${taskIndex}" ${t.completed ? "checked" : ""}>`;
+          card.appendChild(row);
+        });
+
+        const meta = document.createElement("div");
+        meta.className = "day-meta";
+        const completedCount = day.tasks.filter(t => t.completed).length;
+        meta.textContent = `${completedCount}/${day.tasks.length} completed`;
+        card.appendChild(meta);
+        weekPlanEl.appendChild(card);
+      });
+
+      const doneDays = calcWeekStats(plan);
+      weekStats.textContent = `Weekly engagement: ${doneDays}/7 days`;
+    }
+
+    let weeklyPlan = loadWeeklyPlan();
+    const now = new Date(); const todayDay = now.getDay();
+    if (todayDay === 1) { localStorage.removeItem("mh_week_plan"); weeklyPlan = null; }
+
+    if (!weeklyPlan) { weeklyPlan = makeWeeklyPlan(tasks); saveWeeklyPlan(weeklyPlan); }
+    renderWeeklyPlan(weeklyPlan);
+
+    regenBtn.addEventListener("click", (e) => { e.preventDefault(); weeklyPlan = makeWeeklyPlan(tasks); saveWeeklyPlan(weeklyPlan); renderWeeklyPlan(weeklyPlan); });
+
+    weekPlanEl.addEventListener("change", (e) => {
+      if (e.target.matches('input[type="checkbox"]')) {
+        const day = parseInt(e.target.dataset.day, 10);
+        const task = parseInt(e.target.dataset.task, 10);
+        weeklyPlan[day].tasks[task].completed = e.target.checked;
+        saveWeeklyPlan(weeklyPlan);
+        renderWeeklyPlan(weeklyPlan);
+      }
+    });
+
+    const profilePills = document.getElementById("profilePills");
+    const profMap = { student: "Student", working_professional: "Working professional", homemaker: "Homemaker", entrepreneur: "Entrepreneur", healthcare: "Healthcare worker", teacher: "Teacher" };
+    function addPill(text) { const p = document.createElement("div"); p.className = "pill-small"; p.textContent = text; profilePills.appendChild(p); }
+    addPill("Age: " + (profile.age ? profile.age + " yrs" : "Not set"));
+    addPill("Age band: " + (profile.ageBand || "Not set"));
+    addPill("Role: " + (profMap[profile.profession] || "Not set"));
+
+    // Softer status for profile
+    let stressLabel = "Not assessed";
+    if (typeof stress.totalScore === "number") {
+      if (userType === "high_risk") stressLabel = "Needs Support";
+      else if (userType === "moderate_clinical") stressLabel = "Elevated";
+      else if (userType === "mild_distress") stressLabel = "Moderate";
+      else stressLabel = "Stable";
+    }
+    addPill("Stress: " + stressLabel);
+
+    const safetyBlock = document.getElementById("safetyBlock");
+    if (level === "high" || userType === "high_risk") {
+      safetyBlock.innerHTML = "<div class='alert-high'><i class='fas fa-exclamation-triangle'></i> <div><strong>Safety-focused mode active.</strong> Consider reaching out to a mental health professional. Crisis resources are available 24/7.</div></div>";
+    } else {
+      safetyBlock.innerHTML = "<p style='font-size:0.8rem;color:var(--text-muted);'>Professional support and crisis resources are available if stress becomes overwhelming.</p>";
+    }
+
+    // Weekly toggle logic
+    document.getElementById('weekToggle').addEventListener('click', function () {
+      this.classList.toggle('active');
+      document.getElementById('weekContent').classList.toggle('show');
+    });
+
+    // Mood Emoji Logic
+    const emojiBtns = document.querySelectorAll('.emoji-btn');
+    const moodFeedback = document.getElementById('moodFeedback');
+
+    emojiBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        emojiBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        let moods = safeReadArray("mh_moods");
+        moods.push({ mood: this.dataset.mood, time: new Date().toISOString() });
+        saveData("mh_moods", moods);
+
+        // Show fleeting feedback
+        moodFeedback.classList.add("visible");
+        setTimeout(() => { moodFeedback.classList.remove("visible"); }, 2000);
+
+        updateStats();
+      });
+    });
+
+    // Reflection Logic
+    const reflectionInput = document.getElementById('reflectionInput');
+    reflectionInput.value = localStorage.getItem('mh_reflection_today') || "";
+    reflectionInput.addEventListener('input', (e) => {
+      localStorage.setItem('mh_reflection_today', e.target.value);
+    });
+
+    function updateStats() {
+      const allTaskDays = Object.keys(taskProgress);
+      let totalCompleted = 0;
+      allTaskDays.forEach(d => { totalCompleted += taskProgress[d].completed.length; });
+      document.getElementById("totalTasks").textContent = totalCompleted;
+
+      const moods = safeReadArray("mh_moods");
+      document.getElementById("moodCheckins").textContent = moods.length;
+
+      // Calculate Trend
+      if (moods.length > 2) {
+        const lastMood = parseInt(moods[moods.length - 1].mood);
+        const prevMood = parseInt(moods[moods.length - 2].mood);
+        const trendEl = document.getElementById('moodTrend');
+        if (lastMood > prevMood) {
+          trendEl.innerHTML = '<i class="fas fa-caret-up"></i>';
+          trendEl.className = 'stat-trend up';
+        } else if (lastMood < prevMood) {
+          trendEl.innerHTML = '<i class="fas fa-caret-down"></i>';
+          trendEl.className = 'stat-trend down';
+        } else {
+          trendEl.innerHTML = '<i class="fas fa-minus"></i>';
+          trendEl.className = 'stat-trend stable';
+        }
+      }
+
+      const journals = safeReadArray("mh_journal");
+      document.getElementById("journalEntries").textContent = journals.length;
+
+      document.getElementById("weeklyEngagement").textContent = calcWeekStats(weeklyPlan);
+
+      // Stress Trend placeholder logic
+      const sTrend = document.getElementById('statsTrend');
+      if (userType === "stable") {
+        sTrend.textContent = "Stable (no increase)";
+        sTrend.className = "stat-trend stable";
+      } else {
+        sTrend.textContent = "Assess weekly";
+        sTrend.className = "stat-trend stable";
+      }
+    }
+    updateStats();
+  </script>
+</body>
+
+</html>

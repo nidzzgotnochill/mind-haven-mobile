@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Focus Dots | Mindful Haven</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+  <link href="mobile-responsive.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Mode */
+            --sage-gradient: linear-gradient(135deg, #c9dcc4 0%, #d4c5e8 100%);
+            --sage-dark: #5a6b56;
+            --sage-light: #e8f3e5;
+            --lavender: #d4c5e8;
+            --bg-primary: #f9fafb;
+            --bg-secondary: #ffffff;
+            --text-dark: #111827;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-soft: #eef2ff;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --ball-target: radial-gradient(circle at 30% 30%, #a5b4fc, #6366f1);
+            --ball-distractor: radial-gradient(circle at 30% 30%, #e2e8f0, #94a3b8);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode */
+            --sage-gradient: linear-gradient(135deg, #1a1d2e 0%, #1f2937 100%);
+            --sage-dark: #94a3b8;
+            --sage-light: #1e293b;
+            --lavender: #6366f1;
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1d2e;
+            --text-dark: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #8b5cf6;
+            --accent-soft: #312e81;
+            --border-light: #2d3748;
+            --glass-bg: rgba(26, 29, 46, 0.9);
+            --glass: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --ball-target: radial-gradient(circle at 30% 30%, #818cf8, #4f46e5);
+            --ball-distractor: radial-gradient(circle at 30% 30%, #475569, #1e293b);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-dark);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+        }
+
+        .header-bar {
+            width: 100%;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+        }
+
+        .back-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .game-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            cursor: crosshair;
+        }
+
+        .ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .ball:active {
+            transform: scale(0.95);
+        }
+
+        .ball.target {
+            background: var(--ball-target);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+            z-index: 10;
+        }
+
+        .ball.distractor {
+            background: var(--ball-distractor);
+            opacity: 0.8;
+            z-index: 5;
+        }
+
+        /* Floating HUD */
+        .hud {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            padding: 10px 30px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            /* Let clicks pass through if balls are under */
+            z-index: 50;
+        }
+
+        .hud-item {
+            text-align: center;
+        }
+
+        .hud-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+        }
+
+        .hud-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            gap: 10px;
+            z-index: 50;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: var(--text-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* Score floating popup */
+        .score-float {
+            position: absolute;
+            font-weight: 800;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 0.8s forwards;
+            z-index: 100;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-plus {
+            color: #22c55e;
+        }
+
+        .score-minus {
+            color: #ef4444;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-50px) scale(1.2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header-bar">
+        <a href="games.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Games</a>
+    </div>
+
+    <div class="hud">
+        <div class="hud-item">
+            <div class="hud-value" id="score">0</div>
+            <div class="hud-label">Score</div>
+        </div>
+        <div class="hud-item" style="width: 1px; background: var(--glass-border); margin: 0 10px;"></div>
+        <div class="hud-item">
+            <div class="hud-value" id="timer">0:00</div>
+            <div class="hud-label">Time</div>
+        </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <!-- Balls will spawn here -->
+    </div>
+
+    <div class="controls">
+        <button class="btn active" id="btn-slow" onclick="setSpeed('slow')">Zen</button>
+        <button class="btn" id="btn-medium" onclick="setSpeed('medium')">Focus</button>
+        <button class="btn" id="btn-fast" onclick="setSpeed('fast')">Flow</button>
+        <div style="width: 1px; background: var(--glass-border); margin: 0 5px;"></div>
+        <button class="btn" onclick="resetGame()"><i class="fas fa-redo"></i></button>
+    </div>
+
+    <script>
+        // Init Theme
+        const savedTheme = localStorage.getItem('mh_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        const gameArea = document.getElementById('gameArea');
+        const scoreEl = document.getElementById('score');
+        const timerEl = document.getElementById('timer');
+
+        // Config
+        let balls = [];
+        let score = 0;
+        let speedMultiplier = 1; // 1, 2, 4
+        let baseSpeed = 1.5;
+        let isPlaying = true;
+        let startTime = Date.now();
+        let animationId;
+
+        // Mode Settings
+        const MODES = {
+            slow: { speed: 1, targets: 1, distractors: 5 },
+            medium: { speed: 2.5, targets: 2, distractors: 8 },
+            fast: { speed: 4.5, targets: 3, distractors: 12 }
+        };
+        let currentMode = 'slow';
+
+        class Ball {
+            constructor(type) {
+                this.type = type; // 'target' or 'distractor'
+                this.element = document.createElement('div');
+                this.element.className = `ball ${type}`;
+
+                // Random Size Variation
+                const size = 40 + Math.random() * 30;
+                this.element.style.width = `${size}px`;
+                this.element.style.height = `${size}px`;
+
+                this.rad = size / 2;
+
+                // Position
+                const { width, height } = gameArea.getBoundingClientRect();
+                this.x = Math.random() * (width - size);
+                this.y = Math.random() * (height - size);
+
+                // Velocity
+                const angle = Math.random() * Math.PI * 2;
+                this.vx = Math.cos(angle) * baseSpeed;
+                this.vy = Math.sin(angle) * baseSpeed;
+
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+
+                // Interaction
+                this.element.addEventListener('mousedown', (e) => this.handleClick(e));
+
+                gameArea.appendChild(this.element);
+            }
+
+            update(width, height, speedMulti) {
+                this.x += this.vx * speedMulti;
+                this.y += this.vy * speedMulti;
+
+                // Bounce
+                if (this.x <= 0 || this.x + (this.rad * 2) >= width) {
+                    this.vx *= -1;
+                    this.x = Math.max(0, Math.min(this.x, width - (this.rad * 2)));
+                }
+                if (this.y <= 0 || this.y + (this.rad * 2) >= height) {
+                    this.vy *= -1;
+                    this.y = Math.max(0, Math.min(this.y, height - (this.rad * 2)));
+                }
+
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+            }
+
+            handleClick(e) {
+                e.stopPropagation();
+                if (this.type === 'target') {
+                    // Success
+                    score += 10;
+                    showFloatText(e.clientX, e.clientY, '+10', 'plus');
+                    this.reposition();
+                    // Maybe spawn a particle effect here
+                } else {
+                    // Fail
+                    score = Math.max(0, score - 5);
+                    showFloatText(e.clientX, e.clientY, '-5', 'minus');
+                }
+                scoreEl.textContent = score;
+
+                // Tiny visual feedback on ball
+                this.element.style.transform = `translate(${this.x}px, ${this.y}px) scale(0.8)`;
+                setTimeout(() => {
+                    this.element.style.transform = `translate(${this.x}px, ${this.y}px) scale(1)`;
+                }, 100);
+            }
+
+            reposition() {
+                const { width, height } = gameArea.getBoundingClientRect();
+                this.x = Math.random() * (width - this.rad * 2);
+                this.y = Math.random() * (height - this.rad * 2);
+            }
+        }
+
+        function showFloatText(x, y, text, type) {
+            const el = document.createElement('div');
+            el.className = `score-float score-${type}`;
+            el.textContent = text;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 800);
+        }
+
+        function spawnBalls() {
+            // Clear
+            gameArea.innerHTML = '';
+            balls = [];
+
+            const config = MODES[currentMode];
+            speedMultiplier = config.speed;
+
+            // Spawn Targets
+            for (let i = 0; i < config.targets; i++) balls.push(new Ball('target'));
+            // Spawn Distractors
+            for (let i = 0; i < config.distractors; i++) balls.push(new Ball('distractor'));
+        }
+
+        function loop() {
+            if (!isPlaying) return;
+            constrect = gameArea.getBoundingClientRect();
+            const { width, height } = gameArea.getBoundingClientRect();
+
+            balls.forEach(b => b.update(width, height, speedMultiplier));
+
+            // Timer
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const m = Math.floor(elapsed / 60);
+            const s = elapsed % 60;
+            timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+
+            animationId = requestAnimationFrame(loop);
+        }
+
+        function setSpeed(mode) {
+            currentMode = mode;
+            // Update buttons
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${mode}`).classList.add('active');
+
+            spawnBalls();
+        }
+
+        function resetGame() {
+            score = 0;
+            scoreEl.textContent = '0';
+            startTime = Date.now();
+            spawnBalls();
+        }
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            // Optional: Handle out of bounds adjustment
+        });
+
+        // Init
+        spawnBalls();
+        loop();
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            cancelAnimationFrame(animationId);
+        });
+
+    </script>
+</body>
+
+</html>

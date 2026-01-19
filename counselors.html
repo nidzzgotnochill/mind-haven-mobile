@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counselors & Support | Mindful Haven</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="mobile-responsive.css" rel="stylesheet">
+  <style>
+    :root {
+      --sage-gradient: linear-gradient(135deg, #c9dcc4 0%, #d4c5e8 100%);
+      --sage-dark: #5a6b56;
+      --sage-light: #e8f3e5;
+      --lavender: #d4c5e8;
+      --bg-primary: #f9fafb;
+      --bg-secondary: #ffffff;
+      --text-dark: #111827;
+      --text-muted: #6b7280;
+      --accent: #6366f1;
+      --border-light: #e5e7eb;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    [data-theme="dark"] {
+      --sage-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --sage-dark: #cbd5f5;
+      --sage-light: #1e293b;
+      --lavender: #6366f1;
+      --bg-primary: #020617;
+      --bg-secondary: #020617;
+      --text-dark: #f9fafb;
+      --text-muted: #94a3b8;
+      --accent: #8b5cf6;
+      --border-light: #334155;
+      --glass-bg: rgba(15, 23, 42, 0.9);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-dark);
+      padding-bottom: 120px;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 10%;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--sage-dark);
+    }
+
+    .logo i {
+      font-size: 1.4rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.25s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .support-pill {
+      background: var(--text-dark);
+      color: #fff !important;
+      padding: 8px 24px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .theme-toggle {
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(15, 23, 42, 0.04);
+      color: var(--text-muted);
+      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.35);
+      transition: all 0.25s;
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px) scale(1.03);
+    }
+
+    /* CUTE LEAVES */
+    .leaf-left-hero,
+    .leaf-right-hero {
+      position: absolute;
+      opacity: 0.14;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    [data-theme="dark"] .leaf-left-hero,
+    [data-theme="dark"] .leaf-right-hero {
+      opacity: 0.08;
+    }
+
+    .leaf-left-hero {
+      left: -50px;
+      top: 12%;
+      width: 210px;
+      height: 320px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M50,60 Q80,110 50,160 T50,260 T50,350" stroke="%2387a383" stroke-width="4" fill="none" opacity="0.5"/><ellipse cx="72" cy="85" rx="30" ry="14" fill="%2387a383" opacity="0.6" transform="rotate(-18 72 85)"/><ellipse cx="32" cy="140" rx="34" ry="18" fill="%2387a383" opacity="0.6" transform="rotate(12 32 140)"/><ellipse cx="68" cy="210" rx="28" ry="15" fill="%2387a383" opacity="0.6" transform="rotate(-24 68 210)"/></svg>') no-repeat center/contain;
+    }
+
+    .leaf-right-hero {
+      right: -60px;
+      top: 18%;
+      width: 230px;
+      height: 330px;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M150,60 Q120,110 150,160 T150,260 T150,350" stroke="%2387a383" stroke-width="4" fill="none" opacity="0.5"/><ellipse cx="128" cy="90" rx="30" ry="14" fill="%2387a383" opacity="0.6" transform="rotate(16 128 90)"/><ellipse cx="170" cy="145" rx="34" ry="18" fill="%2387a383" opacity="0.6" transform="rotate(-14 170 145)"/><ellipse cx="138" cy="215" rx="28" ry="15" fill="%2387a383" opacity="0.6" transform="rotate(22 138 215)"/></svg>') no-repeat center/contain;
+    }
+
+    /* HERO + ABSTRACT BLOBS */
+    .hero-container {
+      padding: 40px 10%;
+      background: var(--sage-gradient);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 50px;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.25);
+    }
+
+    .hero-container::before,
+    .hero-container::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero-container::before {
+      top: -90px;
+      right: -90px;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, transparent 70%);
+    }
+
+    .hero-container::after {
+      bottom: -70px;
+      left: -70px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, transparent 70%);
+    }
+
+    .abstract-circle {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, transparent 60%);
+    }
+
+    .circle-1 {
+      width: 120px;
+      height: 120px;
+      top: 20%;
+      right: 18%;
+    }
+
+    .circle-2 {
+      width: 90px;
+      height: 90px;
+      bottom: 30%;
+      left: 22%;
+    }
+
+    .circle-3 {
+      width: 70px;
+      height: 70px;
+      top: 60%;
+      right: 32%;
+    }
+
+    .hero-illustration,
+    .hero-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-illustration {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1;
+      background: var(--glass-bg);
+      border-radius: 50%;
+      padding: 28px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+    }
+
+    [data-theme="dark"] .hero-illustration {
+      background: rgba(15, 23, 42, 0.94);
+      border-color: rgba(51, 65, 85, 0.9);
+    }
+
+    .heart-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-text {
+      max-width: 580px;
+    }
+
+    .hero-text h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      line-height: 1.15;
+    }
+
+    .hero-text p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.96);
+      margin-bottom: 4px;
+    }
+
+    .hero-text span {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* EXPLORE SECTION */
+    .explore-section {
+      padding: 40px 10% 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .explore-section::before,
+    .explore-section::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .explore-section::before {
+      top: 0;
+      left: -5%;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, rgba(201, 220, 196, 0.08) 0%, transparent 70%);
+    }
+
+    .explore-section::after {
+      bottom: 10%;
+      right: -5%;
+      width: 240px;
+      height: 240px;
+      background: linear-gradient(135deg, rgba(212, 197, 232, 0.08) 0%, transparent 70%);
+    }
+
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--sage-dark);
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    [data-theme="dark"] .section-title {
+      color: var(--text-dark);
+    }
+
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .explore-card {
+      background: var(--glass-bg);
+      border-radius: 24px;
+      padding: 26px 22px;
+      text-align: center;
+      border: 1px solid var(--border-light);
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    [data-theme="dark"] .explore-card {
+      background: rgba(15, 23, 42, 0.95);
+      border-color: var(--border-light);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .explore-card::before {
+      content: '';
+      position: absolute;
+      top: -26px;
+      right: -26px;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(201, 220, 196, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      transition: 0.25s;
+    }
+
+    .explore-card:hover::before {
+      transform: scale(1.2);
+      opacity: 0.7;
+    }
+
+    .explore-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+      border-color: var(--accent);
+    }
+
+    .explore-card.purple {
+      background: linear-gradient(145deg, rgba(212, 197, 232, 0.35), rgba(255, 255, 255, 0.98));
+      border-color: var(--lavender);
+    }
+
+    [data-theme="dark"] .explore-card.purple {
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.3), rgba(15, 23, 42, 0.96));
+    }
+
+    .explore-card.white {
+      background: var(--glass-bg);
+    }
+
+    .explore-card.light {
+      background: linear-gradient(145deg, rgba(232, 243, 229, 0.4), var(--glass-bg));
+    }
+
+    .card-icon {
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--sage-dark);
+      margin-bottom: 6px;
+    }
+
+    [data-theme="dark"] .card-title {
+      color: var(--text-dark);
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .card-btn {
+      background: var(--glass-bg);
+      color: var(--sage-dark);
+      padding: 9px 22px;
+      border-radius: 24px;
+      border: 2px solid var(--sage-dark);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.25s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .card-btn:hover {
+      background: var(--sage-dark);
+      color: #fff;
+    }
+
+    /* COUNSELORS GRID */
+    .therapists-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .therapist-abstract {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(201, 220, 196, 0.18), rgba(212, 197, 232, 0.18));
+      z-index: 0;
+    }
+
+    .abstract-t1 {
+      width: 120px;
+      height: 120px;
+      top: 8%;
+      left: 5%;
+    }
+
+    .abstract-t2 {
+      width: 90px;
+      height: 90px;
+      top: 52%;
+      right: 8%;
+    }
+
+    .abstract-t3 {
+      width: 150px;
+      height: 150px;
+      bottom: 12%;
+      left: 10%;
+    }
+
+    .therapists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .therapist-card {
+      background: var(--glass-bg);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      transition: all 0.25s;
+      cursor: pointer;
+      position: relative;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    [data-theme="dark"] .therapist-card {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: var(--border-light);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    }
+
+    .therapist-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--sage-gradient);
+      transform: scaleX(0);
+      transition: 0.25s;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .therapist-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .therapist-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+      border-color: var(--accent);
+    }
+
+    .therapist-img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--sage-light), var(--lavender));
+    }
+
+    .therapist-info {
+      padding: 18px 18px 20px;
+    }
+
+    .therapist-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--sage-dark);
+      margin-bottom: 4px;
+    }
+
+    [data-theme="dark"] .therapist-name {
+      color: var(--text-dark);
+    }
+
+    .therapist-specialty {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .therapist-bio {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .availability-badge {
+      display: inline-block;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-available {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-busy {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* FOOTER & MOBILE NAV */
+    footer {
+      background: var(--glass-bg);
+      padding: 26px 10%;
+      text-align: center;
+      border-top: 1px solid var(--border-light);
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(201, 220, 196, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 26px;
+      justify-content: center;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .social-icons a {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      transition: 0.25s;
+    }
+
+    .social-icons a:hover {
+      color: var(--sage-dark);
+    }
+
+    footer p {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--glass-bg);
+      display: none;
+      justify-content: space-around;
+      padding: 14px 0;
+      box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.12);
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-light);
+    }
+
+    [data-theme="dark"] .bottom-nav {
+      background: rgba(15, 23, 42, 0.97);
+      border-top-color: var(--border-light);
+    }
+
+    .bottom-nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .bottom-nav a i {
+      display: block;
+      font-size: 1.3rem;
+      margin-bottom: 3px;
+    }
+
+    .sos-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 26px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: white;
+      border: none;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 18px 45px rgba(239, 68, 68, 0.6);
+      transition: all 0.25s;
+      z-index: 999;
+    }
+
+    .sos-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 24px 60px rgba(239, 68, 68, 0.8);
+    }
+
+    @media(max-width:1000px) {
+      .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 32px 8% 38px;
+        gap: 26px;
+      }
+
+      .hero-illustration {
+        margin: 0 auto;
+        max-width: 260px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .bottom-nav {
+        display: flex;
+      }
+
+      .sos-btn {
+        bottom: 88px;
+      }
+
+      .leaf-left-hero,
+      .leaf-right-hero,
+      .abstract-circle,
+      .therapist-abstract {
+        display: none;
+      }
+    }
+
+    .mindful-buddies {
+      position: absolute;
+      bottom: 20px;
+      right: 5%;
+      width: 150px;
+      height: 110px;
+      z-index: 2;
+      opacity: 0.9;
+      pointer-events: none;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><g transform="translate(80, 100)"><ellipse cx="0" cy="0" rx="35" ry="45" fill="%23ffc9b5" /><path d="M-35,-15 Q0,-45 35,-15" fill="%235a6b56" /><ellipse cx="-20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(-20)" /><ellipse cx="20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(20)" /><path d="M-10,5 Q-5,8 0,5 M10,5 Q15,8 20,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-5,20 Q5,28 15,20" stroke="%23374151" stroke-width="2" fill="none" /></g><g transform="translate(200, 110)"><ellipse cx="0" cy="0" rx="38" ry="48" fill="%23ffc9b5" /><path d="M-38,-15 Q0,-48 38,-15" fill="%235a6b56" /><ellipse cx="-22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(-15)" /><ellipse cx="22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(15)" /><path d="M-12,5 Q-6,8 0,5 M12,5 Q18,8 24,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-6,22 Q6,30 18,22" stroke="%23374151" stroke-width="2" fill="none" /></g><circle cx="40" cy="40" r="10" fill="%23d4c5e8" opacity="0.5" /><circle cx="260" cy="160" r="8" fill="%23d4c5e8" opacity="0.5" /></svg>') no-repeat center/contain;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes fadeInBounce {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+      }
+
+      60% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.05);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .affirmation-bubble {
+      position: absolute;
+      bottom: 135px;
+      right: 5%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 16px 22px;
+      max-width: 260px;
+      z-index: 3;
+      box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: fadeInBounce 1.2s ease-out 0.8s both;
+    }
+
+    [data-theme="dark"] .affirmation-bubble {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .affirmation-bubble p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo"><i class="fas fa-brain"></i> Mindful Haven</div>
+    <ul class="nav-links">
+      <li><a href="journey.html">Home</a></li>
+      <li><a href="journal.html">Journal</a></li>
+      <li><a href="positivity.html">Positivity</a></li>
+      <li><a href="counselors.html" class="support-pill">Counselors</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-sun"></i><span>Light</span></button>
+  </nav>
+
+  <!-- HERO (abstract + leaves + heart) -->
+  <div class="hero-container">
+    <div class="leaf-left-hero"></div>
+    <div class="leaf-right-hero"></div>
+    <div class="abstract-circle circle-1"></div>
+    <div class="abstract-circle circle-2"></div>
+    <div class="abstract-circle circle-3"></div>
+
+    <div class="hero-illustration">
+      <!-- Paste your full heart SVG here -->
+      <svg viewBox="0 0 300 340" class="heart-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- simplified example, replace with your existing detailed SVG if you want -->
+        <path
+          d="M150 310 C130 300, 70 260, 55 190 C48 155, 55 115, 85 100 C105 90, 125 95, 150 120 C175 95, 195 90, 215 100 C245 115, 252 155, 245 190 C230 260, 170 300, 150 310 Z"
+          fill="none" stroke="#4a5a6a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M150 80 L150 105" stroke="#4a5a6a" stroke-width="6" stroke-linecap="round" fill="none" />
+        <path d="M165 88 L172 115" stroke="#4a5a6a" stroke-width="5" stroke-linecap="round" fill="none" />
+        <path d="M130 150 Q110 170, 100 200" stroke="#4a5a6a" stroke-width="3.5" fill="none" />
+        <path d="M170 150 Q190 170, 200 200" stroke="#4a5a6a" stroke-width="3.5" fill="none" />
+        <line x1="150" y1="110" x2="150" y2="285" stroke="#4a5a6a" stroke-width="3" stroke-dasharray="5,5"
+          opacity="0.7" />
+        <g opacity="0.8">
+          <circle cx="45" cy="165" r="8" fill="none" stroke="#4a5a6a" stroke-width="2.5" />
+          <circle cx="39" cy="172" r="5" fill="rgba(74,90,106,0.35)" />
+          <circle cx="51" cy="172" r="5" fill="rgba(74,90,106,0.35)" />
+          <circle cx="45" cy="158" r="5" fill="rgba(74,90,106,0.35)" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-text">
+      <h1>Find Your Counselor</h1>
+      <p>Connect with qualified professionals</p>
+      <span>Browse profiles, check availability, and book the support that feels right for you.</span>
+    </div>
+    <div class="mindful-buddies"></div>
+    <div class="affirmation-bubble">
+      <p>✨ We're here to support you 🤝 ✨</p>
+    </div>
+  </div>
+
+  <!-- EXPLORE SECTION (abstract) -->
+  <div class="explore-section">
+    <h2 class="section-title">Ways to get support</h2>
+    <div class="explore-grid">
+      <div class="explore-card purple">
+        <div class="card-icon">📅</div>
+        <h3 class="card-title">Book a 1:1 Session</h3>
+        <p class="card-desc">Choose a counselor, pick a time, and start a private conversation.</p>
+        <a href="#therapists" class="card-btn">View Counselors</a>
+      </div>
+      <div class="explore-card white">
+        <div class="card-icon">👥</div>
+        <h3 class="card-title">Join Group Circles</h3>
+        <p class="card-desc">Small themed groups for stress, anxiety, and life changes.</p>
+        <a href="#therapists" class="card-btn">Coming Soon</a>
+      </div>
+      <div class="explore-card light">
+        <div class="card-icon">💬</div>
+        <h3 class="card-title">Quick Text Support</h3>
+        <p class="card-desc">Not ready for a call? Start with chat‑based guidance anytime.</p>
+        <a href="chatbot2.html" class="card-btn">Open Chat</a>
+      </div>
+    </div>
+
+    <!-- COUNSELORS GRID -->
+    <h2 class="section-title" id="therapists">Featured counselors</h2>
+    <div class="therapist-abstract abstract-t1"></div>
+    <div class="therapist-abstract abstract-t2"></div>
+    <div class="therapist-abstract abstract-t3"></div>
+
+    <div class="therapists-grid">
+      <!-- 9 counselors -->
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop"
+          class="therapist-img" alt="Dr. Emma Davis">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Dr. Emma Davis</h3>
+          <p class="therapist-specialty">Clinical Psychologist</p>
+          <p class="therapist-bio">Anxiety, depression, and trauma recovery with 12+ years of experience.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop" class="therapist-img"
+          alt="Corinne Evans Mora">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Corinne Evans Mora</h3>
+          <p class="therapist-specialty">Marriage & Family Therapist</p>
+          <p class="therapist-bio">Helps couples and families navigate conflict and communication.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop"
+          class="therapist-img" alt="Christian Max Ethan">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Christian Max Ethan</h3>
+          <p class="therapist-specialty">Behavioral Therapist</p>
+          <p class="therapist-bio">CBT‑based tools for stress, habits, and performance anxiety.</p>
+          <span class="availability-badge badge-busy">Busy</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&h=400&fit=crop"
+          class="therapist-img" alt="Vincent St. Evan L.">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Vincent St. Evan L.</h3>
+          <p class="therapist-specialty">Wellness Mentor</p>
+          <p class="therapist-bio">Holistic routines blending mindfulness and lifestyle coaching.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop"
+          class="therapist-img" alt="Dr. Sarah Mitchell">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Dr. Sarah Mitchell</h3>
+          <p class="therapist-specialty">Teen Counselor</p>
+          <p class="therapist-bio">Supports teens with exam pressure, identity, and self‑esteem.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop" class="therapist-img"
+          alt="Dr. James Carter">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Dr. James Carter</h3>
+          <p class="therapist-specialty">Trauma Specialist</p>
+          <p class="therapist-bio">PTSD and trauma‑informed care with evidence‑based methods.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=400&h=400&fit=crop" class="therapist-img"
+          alt="Aisha Khan">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Aisha Khan</h3>
+          <p class="therapist-specialty">Mindfulness Coach</p>
+          <p class="therapist-bio">Guided meditation, breathwork, and grounding for daily anxiety.</p>
+          <span class="availability-badge badge-available">Available</span>
+        </div>
+      </div>
+
+      <div class="therapist-card">
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop"
+          class="therapist-img" alt="Dr. Elena Rossi">
+        <div class="therapist-info">
+          <h3 class="therapist-name">Dr. Elena Rossi</h3>
+          <p class="therapist-specialty">Psychiatrist</p>
+          <p class="therapist-bio">Medication plus therapy for mood, sleep, and panic issues.</p>
+          <span class="availability-badge badge-busy">Busy</span>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#about">About Us</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#terms">Terms</a>
+    </div>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>© 2025 Mindful Haven. Your mental wellness matters.</p>
+  </footer>
+
+  <button class="sos-btn"
+    onclick="alert('🆘 If you are in crisis, please contact your local helpline or emergency services immediately.')">
+    SOS
+  </button>
+
+  <div class="bottom-nav">
+    <a href="journey.html"><i class="fas fa-home"></i>Home</a>
+    <a href="positivity.html"><i class="fas fa-smile"></i>Positivity</a>
+    <a href="counselors.html"><i class="fas fa-user-md"></i>Counselors</a>
+  </div>
+
+  <script>
+    function syncTheme() {
+      const saved = localStorage.getItem('mh_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      const btn = document.getElementById('themeToggle');
+      const icon = btn.querySelector('i');
+      const text = btn.querySelector('span');
+      if (saved === 'dark') {
+        icon.className = 'fas fa-moon';
+        text.textContent = 'Dark';
+      } else {
+        icon.className = 'fas fa-sun';
+        text.textContent = 'Light';
+      }
+    }
+    document.getElementById('themeToggle').addEventListener('click', function () {
+      const html = document.documentElement;
+      const curr = html.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('mh_theme', next);
+      syncTheme();
+    });
+    syncTheme();
+  </script>
+</body>
+
+</html>

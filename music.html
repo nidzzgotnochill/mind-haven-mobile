@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <script src="auth.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soothing Sounds | Mindful Haven</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
+  <link href="mobile-responsive.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Mode - Index Palette */
+            --sage-gradient: linear-gradient(135deg, #c9dcc4 0%, #d4c5e8 100%);
+            --sage-dark: #5a6b56;
+            --sage-light: #e8f3e5;
+            --lavender: #d4c5e8;
+            --bg-primary: #f9fafb;
+            --bg-secondary: #ffffff;
+            --text-dark: #111827;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-soft: #eef2ff;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+
+            /* Music Page Specifics */
+            --card-shadow: rgba(90, 107, 86, 0.15);
+            --icon-bg: #f4f7f2;
+            --support-black: #1a1a1a;
+
+            /* Stress Indicators */
+            --lvl-1: #d4edda;
+            --lvl-1-txt: #155724;
+            --lvl-2: #fff3cd;
+            --lvl-2-txt: #856404;
+            --lvl-3: #f8d7da;
+            --lvl-3-txt: #721c24;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode - Index Palette */
+            --sage-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --sage-dark: #94a3b8;
+            --sage-light: #1e293b;
+            --lavender: #6366f1;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-dark: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #8b5cf6;
+            --accent-soft: #312e81;
+            --border-light: #334155;
+            --glass-bg: rgba(30, 41, 59, 0.9);
+
+            /* Music Page Specifics Dark */
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --icon-bg: #334155;
+            --support-black: #f1f5f9;
+
+            /* Stress Indicators Dark */
+            --lvl-1: #064e3b;
+            --lvl-1-txt: #d1fae5;
+            --lvl-2: #78350f;
+            --lvl-2-txt: #fef3c7;
+            --lvl-3: #7f1d1d;
+            --lvl-3-txt: #fee2e2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-dark);
+            padding-bottom: 120px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 10%;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.3s;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--sage-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .support-pill {
+            background: var(--text-dark);
+            color: var(--bg-primary) !important;
+            padding: 10px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-dark);
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-primary);
+        }
+
+        /* --- HERO PLAYER --- */
+        .hero-container {
+            padding: 40px 10%;
+            position: relative;
+            background: var(--sage-gradient);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        /* Botanical Leaves from Index */
+        .botanical-left,
+        .botanical-right {
+            position: absolute;
+            opacity: 0.4;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .botanical-left {
+            left: -50px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M50,50 Q80,100 50,150 T50,250 T50,350" stroke="%235a6b56" stroke-width="3" fill="none" opacity="0.3"/><ellipse cx="70" cy="80" rx="30" ry="15" fill="%2387a383" opacity="0.4" transform="rotate(-20 70 80)"/><ellipse cx="30" cy="130" rx="35" ry="18" fill="%2387a383" opacity="0.4" transform="rotate(15 30 130)"/><ellipse cx="65" cy="200" rx="28" ry="14" fill="%2387a383" opacity="0.4" transform="rotate(-25 65 200)"/></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        .botanical-right {
+            right: -50px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M150,50 Q120,100 150,150 T150,250 T150,350" stroke="%235a6b56" stroke-width="3" fill="none" opacity="0.3"/><ellipse cx="130" cy="80" rx="30" ry="15" fill="%2387a383" opacity="0.4" transform="rotate(20 130 80)"/><ellipse cx="170" cy="130" rx="35" ry="18" fill="%2387a383" opacity="0.4" transform="rotate(-15 170 130)"/><ellipse cx="135" cy="200" rx="28" ry="14" fill="%2387a383" opacity="0.4" transform="rotate(25 135 200)"/></svg>') no-repeat;
+            background-size: contain;
+        }
+
+        [data-theme="dark"] .botanical-left,
+        [data-theme="dark"] .botanical-right {
+            opacity: 0.15;
+        }
+
+        .mindful-buddies {
+            position: absolute;
+            bottom: 30px;
+            right: 1%;
+            width: 150px;
+            height: 110px;
+            z-index: 1;
+            opacity: 0.9;
+            pointer-events: none;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><g transform="translate(80, 100)"><ellipse cx="0" cy="0" rx="35" ry="45" fill="%23ffc9b5" /><path d="M-35,-15 Q0,-45 35,-15" fill="%235a6b56" /><ellipse cx="-20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(-20)" /><ellipse cx="20" cy="-25" rx="12" ry="8" fill="%2387a383" transform="rotate(20)" /><path d="M-10,5 Q-5,8 0,5 M10,5 Q15,8 20,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-5,20 Q5,28 15,20" stroke="%23374151" stroke-width="2" fill="none" /></g><g transform="translate(200, 110)"><ellipse cx="0" cy="0" rx="38" ry="48" fill="%23ffc9b5" /><path d="M-38,-15 Q0,-48 38,-15" fill="%235a6b56" /><ellipse cx="-22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(-15)" /><ellipse cx="22" cy="-28" rx="14" ry="9" fill="%2387a383" transform="rotate(15)" /><path d="M-12,5 Q-6,8 0,5 M12,5 Q18,8 24,5" stroke="%23374151" stroke-width="2" fill="none" opacity="0.6"/><path d="M-6,22 Q6,30 18,22" stroke="%23374151" stroke-width="2" fill="none" /></g><circle cx="40" cy="40" r="10" fill="%23d4c5e8" opacity="0.5" /><circle cx="260" cy="160" r="8" fill="%23d4c5e8" opacity="0.5" /></svg>') no-repeat center/contain;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes fadeInBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .affirmation-bubble {
+            position: absolute;
+            bottom: 145px;
+            right: 0%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 16px 22px;
+            max-width: 260px;
+            z-index: 3;
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeInBounce 1.2s ease-out 0.8s both;
+        }
+
+        [data-theme="dark"] .affirmation-bubble {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .affirmation-bubble p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .player-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 1200px;
+            z-index: 2;
+        }
+
+        [data-theme="dark"] .player-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 25px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-info h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .player-info p {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .action-btn {
+            background: var(--text-dark);
+            border: 1px solid transparent;
+            color: var(--bg-secondary);
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* --- SECTION GRID --- */
+        .content-area {
+            padding: 0 10%;
+        }
+
+        .sec-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 40px 0 25px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .music-item {
+            background: var(--bg-secondary);
+            border-radius: 25px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .music-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--card-shadow);
+            border-color: var(--accent);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--icon-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .txt h4 {
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .txt p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        /* --- MOBILE --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-secondary);
+            display: none;
+            justify-content: space-around;
+            padding: 20px 0;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
+            z-index: 1000;
+            border-top: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 1000px) {
+            .player-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .bottom-nav {
+                display: flex;
+            }
+
+            .hero-container {
+                padding: 80px 5% 40px;
+            }
+
+            .botanical-left,
+            .botanical-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo"><i class="fas fa-spa"></i> Mindful Haven</div>
+        <ul class="nav-links">
+            <li><a href="journey.html">Home</a></li>
+            <li><a href="journal.html">Journal</a></li>
+            <li><a href="meditation.html">Meditation</a></li>
+            <li><a href="counselors.html">Support</a></li>
+            <li>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="hero-container">
+        <div class="botanical-left"></div>
+        <div class="botanical-right"></div>
+        <div class="mindful-buddies"></div>
+        <div class="affirmation-bubble">
+            <p>✨ Let the melody heal you 🎵 ✨</p>
+        </div>
+
+        <div class="player-card">
+            <div class="video-wrapper">
+                <iframe id="main-player" width="100%" height="100%" src="https://www.youtube.com/embed/ggfebQ-5-UE"
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="player-info">
+                <p
+                    style="text-transform:uppercase; font-weight:800; font-size:0.8rem; letter-spacing:2px; color:var(--text-dark); opacity:0.8;">
+                    Now Healing</p>
+                <h1 id="track-title">Yaman Drut</h1>
+                <p id="track-artist">Purbayan Chatterjee & Rakesh Chaurasia</p>
+                <button class="action-btn" onclick="addToPlaylist()"><i class="fas fa-plus"></i> Add to
+                    Playlist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playlist Section -->
+    <div class="content-area" id="playlist-container" style="display:none; margin-bottom:40px;">
+        <div class="sec-title"><i class="fas fa-list-ul"></i> Your Playlist</div>
+        <div class="music-grid" id="playlist-grid">
+            <!-- Playlist items will appear here -->
+        </div>
+    </div>
+
+    <div class="content-area">
+        <!-- Meditation -->
+        <div class="sec-title"><i class="fas fa-om"></i> Deep Meditation</div>
+        <div class="music-grid">
+            <div class="music-item" onclick="play('jqnAaUOFOyE', 'Insomnia Relief', 'The Singing Violin')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Insomnia Relief</h4>
+                    <p>Violin Meditation</p>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('pFenlzgBEns', 'Monsoon Malhar', 'Sitar Classical')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Monsoon Malhar</h4>
+                    <p>Nature Fusion</p>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('6o5npd-KS5s', 'Sitar for Health', 'Rishab Sharma')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Sitar Wellness</h4>
+                    <p>Mental Health Mix</p>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('jMcMLAyddzU', 'Morning Raga', 'Bhairavi')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Morning Raga</h4>
+                    <p>Positive Energy</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stress Levels -->
+        <div class="sec-title"><i class="fas fa-leaf"></i> Stress Relief Journey</div>
+        <div class="music-grid">
+            <!-- Level 1 -->
+            <div class="music-item" onclick="play('1loVfme-8hc', 'Evening Melody', 'Subrahmanya Hegde')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Evening Melody</h4>
+                    <p>Raag Durga</p><span class="tag" style="background:var(--lvl-1); color:var(--lvl-1-txt)">Level
+                        1</span>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('IaWMS9vmWRM', 'Stress Reduction', 'Mindful Sounds')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Stress Reduction</h4>
+                    <p>Zen Audio</p><span class="tag" style="background:var(--lvl-1); color:var(--lvl-1-txt)">Level
+                        1</span>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('hQncT4Hswhw', 'Calm Piano', 'Relaxing Vibes')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Calm Piano</h4>
+                    <p>Instrumental</p><span class="tag" style="background:var(--lvl-1); color:var(--lvl-1-txt)">Level
+                        1</span>
+                </div>
+            </div>
+
+            <div class="music-item" onclick="play('z0Jpoyv-T7E', 'Peaceful Guitar', 'Acoustic')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Peaceful Guitar</h4>
+                    <p>Soft Strings</p><span class="tag" style="background:var(--lvl-1); color:var(--lvl-1-txt)">Level
+                        1</span>
+                </div>
+            </div>
+            <!-- Level 2 -->
+            <div class="music-item" onclick="play('1ZYbU82GVz4', 'Deep Calm', 'Manish Vyas')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Deep Calm</h4>
+                    <p>Raga Darbari</p><span class="tag" style="background:var(--lvl-2); color:var(--lvl-2-txt)">Level
+                        2</span>
+                </div>
+            </div>
+
+            <div class="music-item" onclick="play('4XluDP8Ob54', 'Anxiety Relief', 'Healing Frequencies')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Anxiety Relief</h4>
+                    <p>Frequency Healing</p><span class="tag"
+                        style="background:var(--lvl-2); color:var(--lvl-2-txt)">Level 2</span>
+                </div>
+            </div>
+            <!-- Level 3 -->
+            <div class="music-item" onclick="play('nl_7H8UYGDk', 'Intense Peace', 'Purbayan Chatterjee')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Intense Peace</h4>
+                    <p>Raga Jaunpuri</p><span class="tag" style="background:var(--lvl-3); color:var(--lvl-3-txt)">Level
+                        3</span>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('hNn2tBohjxE', 'Om Chanting', 'Spiritual')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Om Chanting</h4>
+                    <p>Divine Connection</p><span class="tag"
+                        style="background:var(--lvl-3); color:var(--lvl-3-txt)">Level 3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sleep -->
+        <div class="sec-title"><i class="fas fa-moon"></i> Sleep & Nature</div>
+        <div class="music-grid">
+            <div class="music-item" onclick="play('yqeirBfn2j4', 'De-stress & Relax', 'Flute & Santoor')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>De-stress & Relax</h4>
+                    <p>Flute & Santoor</p>
+                </div>
+            </div>
+
+            <div class="music-item" onclick="play('IvjMgVS6kng', 'Relaxing River', 'Nature')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Relaxing River</h4>
+                    <p>Water Sounds</p>
+                </div>
+            </div>
+
+            <div class="music-item" onclick="play('ujyu7tkyxtw', 'Tibetan Bowls', 'Rain')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Rain & Bowls</h4>
+                    <p>10 Hour Sleep</p>
+                </div>
+            </div>
+            <div class="music-item" onclick="play('91AcVUR0O8I', 'Forest Birds', 'Morning Ambience')">
+                <div class="icon-box"><i class="fas fa-play"></i></div>
+                <div class="txt">
+                    <h4>Forest Birds</h4>
+                    <p>Morning Ambience</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="journey.html" style="text-decoration:none; color:var(--text-dark); text-align:center;"><i
+                class="fas fa-home" style="display:block; font-size:1.4rem;"></i>Home</a>
+        <div
+            style="background:var(--text-dark); width:55px; height:55px; border-radius:50%; margin-top:-35px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; cursor: pointer;">
+            SOS</div>
+        <a href="#" style="text-decoration:none; color:var(--text-dark); text-align:center;"><i class="fas fa-music"
+                style="display:block; font-size:1.4rem;"></i>Music</a>
+    </div>
+
+    <script>
+        // Theme Logic
+        const rootEl = document.documentElement;
+        const toggleBtn = document.getElementById('themeToggle');
+
+        function applyTheme(theme) {
+            rootEl.setAttribute('data-theme', theme);
+            localStorage.setItem('mh_theme', theme);
+            if (theme === 'dark') {
+                toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                toggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        // Initialize
+        const savedTheme = localStorage.getItem('mh_theme') || 'light';
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            const current = rootEl.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+        });
+
+        // --- UTILITY FUNCTIONS FOR DATA PRIVACY ---
+        function getUserKey(k) {
+            // Check auth.js session or manual check
+            const user = localStorage.getItem('mh_user') || sessionStorage.getItem('mh_user');
+            return user ? `${user}_${k}` : k;
+        }
+
+        function safeReadPlaylist() {
+            try {
+                const key = getUserKey('mh_playlist');
+                return JSON.parse(localStorage.getItem(key)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function savePlaylist(data) {
+            const key = getUserKey('mh_playlist');
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // --- PLAYLIST LOGIC ---
+        let currentTrack = {
+            id: 'ggfebQ-5-UE',
+            title: 'Yaman Drut',
+            artist: 'Purbayan Chatterjee & Rakesh Chaurasia'
+        };
+
+        let playlist = safeReadPlaylist();
+
+        // Explicitly bind the Add to Playlist button to ensure it works
+        document.addEventListener('DOMContentLoaded', () => {
+            const addBtn = document.querySelector('.action-btn');
+            if (addBtn) {
+                // Remove inline onclick if it exists (optional, but cleaner)
+                addBtn.removeAttribute('onclick');
+                addBtn.addEventListener('click', addToPlaylist);
+            }
+        });
+
+        // --- STORAGE MANAGEMENT ---
+        function clearAppData() {
+            if (confirm("This will clear all your saved playlists and settings to fix the storage error. Continue?")) {
+                localStorage.clear();
+                sessionStorage.clear();
+                alert("Storage cleared! The page will now reload.");
+                window.location.reload();
+            }
+        }
+
+        window.addToPlaylist = function () {
+            try {
+                playlist = safeReadPlaylist();
+                // Check if already exists
+                const exists = playlist.some(t => t.id === currentTrack.id);
+                if (!exists) {
+                    playlist.push({ ...currentTrack });
+                    savePlaylist(playlist);
+                    renderPlaylist();
+
+                    // Visual feedback
+                    const btn = document.querySelector('.action-btn');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+                    setTimeout(() => btn.innerHTML = originalText, 2000);
+
+                    // Scroll to playlist so user sees it
+                    document.getElementById('playlist-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    const btn = document.querySelector('.action-btn');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-info-circle"></i> Already Added';
+                    setTimeout(() => btn.innerHTML = originalText, 2000);
+                }
+            } catch (e) {
+                console.error(e);
+                if (e.name === 'QuotaExceededError' || e.message.includes('quota')) {
+                    if (confirm("Your browser storage is full! Would you like to clear old data to fix this?")) {
+                        clearAppData();
+                    }
+                } else {
+                    alert("Error adding to playlist: " + e.message);
+                }
+            }
+        }
+
+        window.removeFromPlaylist = function (index) {
+            try {
+                playlist = safeReadPlaylist();
+                playlist.splice(index, 1);
+                savePlaylist(playlist);
+                renderPlaylist();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Escape helper
+        function escapeStr(str) {
+            return str.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlist-container');
+            const grid = document.getElementById('playlist-grid');
+
+            // Refresh playlist from storage to ensure sync
+            playlist = safeReadPlaylist();
+
+            if (playlist.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            grid.innerHTML = '';
+
+            playlist.forEach((track, index) => {
+                // Determine if this is the currently playing track
+                const isPlaying = track.id === currentTrack.id;
+                const borderStyle = isPlaying ? 'border-color: var(--accent); background: var(--accent-soft);' : '';
+                const safeTitle = escapeStr(track.title);
+                const safeArtist = escapeStr(track.artist);
+
+                const item = document.createElement('div');
+                item.className = 'music-item';
+                item.style = borderStyle;
+                item.innerHTML = `
+                    <div class="icon-box" onclick="playMusic('${track.id}', \`${safeTitle}\`, \`${safeArtist}\`)"><i class="fas fa-play"></i></div>
+                    <div class="txt" onclick="playMusic('${track.id}', \`${safeTitle}\`, \`${safeArtist}\`)" style="flex:1;">
+                        <h4>${track.title}</h4>
+                        <p>${track.artist}</p>
+                    </div>
+                    <button onclick="removeFromPlaylist(${index})" style="background:none; border:none; color:var(--text-muted); cursor:pointer; padding:5px;"><i class="fas fa-trash"></i></button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        // --- CORE PLAY FUNCTION ---
+        window.play = function (id, title, artist) {
+            currentTrack = { id, title, artist };
+            const player = document.getElementById('main-player');
+            const titleEl = document.getElementById('track-title');
+            const artistEl = document.getElementById('track-artist');
+
+            // Force reload iframe to ensure playback starts
+            if (player) {
+                const src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
+                player.src = src;
+            }
+            if (titleEl) titleEl.innerText = title;
+            if (artistEl) artistEl.innerText = artist;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderPlaylist();
+        };
+
+        window.playMusic = function (id, title, artist) {
+            window.play(id, title, artist);
+        };
+
+        // Initial Render
+        renderPlaylist();
+    </script>
+
+</body>
+
+</html>

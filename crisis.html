@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Crisis Support - You're Not Alone | Mindful Haven</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="mobile-responsive.css" rel="stylesheet">
+  <style>
+    :root {
+      --crisis-red: #dc2626;
+      --crisis-red-dark: #991b1b;
+      --crisis-bg: #fee2e2;
+      --warm-orange: #f97316;
+      --warm-yellow: #fbbf24;
+      --safe-green: #10b981;
+      --calm-blue: #3b82f6;
+      --white: #ffffff;
+      --text-dark: #111827;
+      --text-muted: #6b7280;
+      --border-light: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* STICKY CRISIS BANNER - Always visible */
+    .crisis-sticky-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--crisis-red);
+      color: white;
+      padding: 16px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 9999;
+      box-shadow: 0 -4px 20px rgba(220, 38, 38, 0.4);
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .crisis-sticky-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .crisis-sticky-text {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .crisis-sticky-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .crisis-call-btn {
+      padding: 12px 24px;
+      background: white;
+      color: var(--crisis-red);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .crisis-call-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .crisis-call-btn i {
+      animation: ring 1s infinite;
+    }
+
+    @keyframes ring {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      10%,
+      30% {
+        transform: rotate(-10deg);
+      }
+
+      20%,
+      40% {
+        transform: rotate(10deg);
+      }
+    }
+
+    /* ONE-CLICK DIAL BANNERS for mobile */
+    .mobile-dial-banner {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      z-index: 9998;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-dial-banner {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .mobile-dial-btn {
+        padding: 10px 20px;
+        background: white;
+        color: var(--crisis-red);
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 1rem;
+      }
+    }
+
+    /* Header with back button */
+    .top-bar {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      padding: 16px 8%;
+      border-bottom: 2px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: #f3f4f6;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #4b5563;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #e5e7eb;
+      transform: translateX(-4px);
+    }
+
+    /* Hero section - More empathetic */
+    .hero {
+      padding: 50px 8% 40px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.06) 0%, rgba(239, 68, 68, 0.1) 100%);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+
+    .botanical-left,
+    .botanical-right {
+      position: absolute;
+      opacity: 0.4;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 0;
+    }
+
+    .botanical-left {
+      left: -50px;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M50,50 Q80,100 50,150 T50,250 T50,350" stroke="%235a6b56" stroke-width="3" fill="none" opacity="0.3"/><ellipse cx="70" cy="80" rx="30" ry="15" fill="%2387a383" opacity="0.4" transform="rotate(-20 70 80)"/><ellipse cx="30" cy="130" rx="35" ry="18" fill="%2387a383" opacity="0.4" transform="rotate(15 30 130)"/><ellipse cx="65" cy="200" rx="28" ry="14" fill="%2387a383" opacity="0.4" transform="rotate(-25 65 200)"/></svg>') no-repeat;
+      background-size: contain;
+    }
+
+    .botanical-right {
+      right: -50px;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400"><path d="M150,50 Q120,100 150,150 T150,250 T150,350" stroke="%235a6b56" stroke-width="3" fill="none" opacity="0.3"/><ellipse cx="130" cy="80" rx="30" ry="15" fill="%2387a383" opacity="0.4" transform="rotate(20 130 80)"/><ellipse cx="170" cy="130" rx="35" ry="18" fill="%2387a383" opacity="0.4" transform="rotate(-15 170 130)"/><ellipse cx="135" cy="200" rx="28" ry="14" fill="%2387a383" opacity="0.4" transform="rotate(25 135 200)"/></svg>') no-repeat;
+      background-size: contain;
+    }
+
+    [data-theme="dark"] .botanical-left,
+    [data-theme="dark"] .botanical-right {
+      opacity: 0.15;
+    }
+
+    .hero-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: 2.8rem;
+      color: var(--crisis-red-dark);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #7f1d1d;
+      max-width: 750px;
+      margin: 0 auto 30px;
+      line-height: 1.7;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--crisis-red);
+      color: white;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 12px 32px rgba(220, 38, 38, 0.35);
+      transition: all 0.3s;
+    }
+
+    .hero-cta:hover {
+      background: var(--crisis-red-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(220, 38, 38, 0.45);
+    }
+
+    .hero-cta.secondary {
+      background: white;
+      color: var(--crisis-red);
+      border: 2px solid var(--crisis-red);
+    }
+
+    /* Breathing exercise quick access */
+    .breathing-card {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 32px;
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      border: 2px solid var(--calm-blue);
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .breathing-circle {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: var(--calm-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      animation: breathe 8s infinite ease-in-out;
+      cursor: pointer;
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      40% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    .breathing-instructions {
+      font-size: 1.1rem;
+      color: #1e3a8a;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .breathing-desc {
+      font-size: 0.9rem;
+      color: #1e40af;
+      line-height: 1.6;
+    }
+
+    /* Main content */
+    .main {
+      padding: 20px 8%;
+      max-width: 1200px;
+      margin: 0 auto 100px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--crisis-red);
+      font-weight: 800;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section h2 {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .section-intro {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    /* Emergency cards - Larger, clearer */
+    .crisis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .crisis-card {
+      background: linear-gradient(135deg, #fef2f2, #ffffff);
+      border: 3px solid #fca5a5;
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .crisis-card:hover {
+      border-color: var(--crisis-red);
+      box-shadow: 0 12px 32px rgba(220, 38, 38, 0.2);
+      transform: translateY(-6px);
+    }
+
+    .crisis-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .crisis-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--crisis-red);
+      color: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .crisis-card h3 {
+      font-size: 1.2rem;
+      color: var(--crisis-red-dark);
+      flex: 1;
+    }
+
+    .crisis-number {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--crisis-red-dark);
+      margin: 16px 0;
+      letter-spacing: 1px;
+    }
+
+    .crisis-number a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .crisis-number a:hover {
+      color: var(--crisis-red);
+    }
+
+    .crisis-details {
+      font-size: 0.95rem;
+      color: #7f1d1d;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .crisis-languages {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .call-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      background: var(--crisis-red);
+      color: white;
+      text-align: center;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .call-btn:hover {
+      background: var(--crisis-red-dark);
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+    }
+
+    /* Text crisis option */
+    .text-option {
+      background: #ecfdf5;
+      border: 2px solid var(--safe-green);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: #065f46;
+    }
+
+    .text-option a {
+      color: var(--safe-green);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* Regional helplines - Simplified */
+    .regional-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .regional-card {
+      background: #f9fafb;
+      border: 2px solid var(--border-light);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+
+    .regional-card:hover {
+      border-color: var(--calm-blue);
+      background: #eff6ff;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+    }
+
+    .regional-city {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .regional-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    .regional-number {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--calm-blue);
+      margin-bottom: 6px;
+    }
+
+    .regional-number a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .regional-hours {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Safety steps - More visual */
+    .safety-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .safety-step {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      background: #f0fdf4;
+      border-left: 5px solid var(--safe-green);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+
+    .safety-step:hover {
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+      transform: translateX(8px);
+    }
+
+    .step-number {
+      width: 44px;
+      height: 44px;
+      background: var(--safe-green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 1.1rem;
+      color: #065f46;
+      margin-bottom: 6px;
+    }
+
+    .step-content p {
+      font-size: 0.95rem;
+      color: #047857;
+      line-height: 1.6;
+    }
+
+    /* Warning signs */
+    .warning-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .warning-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: #fef3c7;
+      border-left: 4px solid var(--warm-yellow);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #78350f;
+      transition: all 0.3s;
+    }
+
+    .warning-item:hover {
+      transform: translateX(6px);
+    }
+
+    .warning-item i {
+      color: var(--warm-orange);
+      font-size: 1.2rem;
+    }
+
+    /* Coping strategies */
+    .coping-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .coping-card {
+      padding: 20px;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border: 2px solid #93c5fd;
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .coping-card:hover {
+      border-color: var(--calm-blue);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(59, 130, 246, 0.25);
+    }
+
+    .coping-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .coping-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 6px;
+    }
+
+    .coping-desc {
+      font-size: 0.85rem;
+      color: #1e3a8a;
+      line-height: 1.5;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .action-btn.primary {
+      background: var(--safe-green);
+      color: white;
+    }
+
+    .action-btn.primary:hover {
+      background: #059669;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+    }
+
+    .action-btn.secondary {
+      background: white;
+      color: var(--calm-blue);
+      border-color: var(--calm-blue);
+    }
+
+    .action-btn.secondary:hover {
+      background: #eff6ff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Reassurance box */
+    .reassurance {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 3px solid var(--safe-green);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .reassurance h3 {
+      font-size: 1.5rem;
+      color: #065f46;
+      margin-bottom: 16px;
+    }
+
+    .reassurance p {
+      font-size: 1.1rem;
+      color: #047857;
+      line-height: 1.8;
+    }
+
+    /* FAQ Section */
+    .faq-item {
+      background: #f9fafb;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .faq-item:hover {
+      border-color: var(--calm-blue);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-dark);
+    }
+
+    .faq-answer {
+      display: none;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .crisis-number {
+        font-size: 1.8rem;
+      }
+
+      .crisis-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-cta-group {
+        flex-direction: column;
+      }
+
+      .crisis-sticky-banner {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .crisis-sticky-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .crisis-call-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Mobile One-Click Dial Banner -->
+  <div class="mobile-dial-banner">
+    <a href="tel:18005990019" class="mobile-dial-btn">📞 KIRAN</a>
+    <a href="tel:112" class="mobile-dial-btn">🚨 Emergency 112</a>
+  </div>
+
+  <div class="top-bar">
+    <a href="journey.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Journey
+    </a>
+  </div>
+
+  <section class="hero">
+    <div class="botanical-left"></div>
+    <div class="botanical-right"></div>
+    <div class="hero-icon">💚</div>
+    <h1>You Are Not Alone</h1>
+    <p class="hero-subtitle">
+      If you're in crisis or having thoughts of self-harm, help is available right now.
+      You deserve support, and there are people ready to listen—24 hours a day, 7 days a week.
+    </p>
+    <div class="hero-cta-group">
+      <a href="tel:18005990019" class="hero-cta">
+        <i class="fas fa-phone-alt"></i> Call KIRAN (Free)
+      </a>
+      <a href="tel:112" class="hero-cta secondary">
+        <i class="fas fa-ambulance"></i> Emergency 112
+      </a>
+    </div>
+
+    <!-- Breathing Exercise -->
+    <div class="breathing-card">
+      <div class="breathing-circle"
+        onclick="alert('Breathe with the circle:\n• Inhale (4 seconds)\n• Hold (7 seconds)\n• Exhale (8 seconds)\n\nRepeat 3-5 times')">
+        Breathe
+      </div>
+      <div class="breathing-instructions">Take a moment to breathe</div>
+      <div class="breathing-desc">
+        Watch the circle expand and contract. Breathe in slowly as it grows,
+        hold briefly, then exhale as it shrinks. This can help calm your nervous system.
+      </div>
+    </div>
+  </section>
+
+  <main class="main">
+
+    <!-- National 24/7 Helplines -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-circle" style="color:var(--crisis-red);font-size:0.6rem;"></i>
+        Immediate Support · Available 24/7
+      </div>
+      <h2>National Crisis Helplines</h2>
+      <p class="section-intro">Free, confidential support from trained mental health professionals. You can call or text
+        anytime.</p>
+
+      <div class="crisis-grid">
+        <!-- KIRAN -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">💚</div>
+            <h3>KIRAN Helpline</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:18005990019">1800-599-0019</a>
+          </div>
+          <div class="crisis-details">
+            <strong>Government of India</strong> official mental health helpline. Free counseling, crisis intervention,
+            and referrals to mental health services.
+          </div>
+          <div class="crisis-languages">
+            📞 Available in 13 languages including Hindi, English, Tamil, Telugu, Marathi, Gujarati, Punjabi, Kannada,
+            Bengali, Malayalam
+          </div>
+          <a href="tel:18005990019" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call Now (Toll-Free)
+          </a>
+          <div class="text-option">
+            <i class="fas fa-comment"></i>
+            Prefer text? SMS available
+          </div>
+        </div>
+
+        <!-- Emergency Services -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">🚨</div>
+            <h3>Emergency Services</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:112">112</a>
+          </div>
+          <div class="crisis-details">
+            <strong>National Emergency Number</strong> for immediate police, ambulance, or fire services. Call if you're
+            in immediate danger or need urgent medical help.
+          </div>
+          <div class="crisis-languages">
+            ⚡ Immediate response · GPS-enabled location tracking
+          </div>
+          <a href="tel:112" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call 112 Emergency
+          </a>
+        </div>
+
+        <!-- Vandrevala Foundation -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">🤝</div>
+            <h3>Vandrevala Foundation</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:9999666555">9999-666-555</a>
+          </div>
+          <div class="crisis-details">
+            <strong>24/7 Crisis Support</strong> via call, SMS, or WhatsApp. Professional counseling for depression,
+            anxiety, and mental health concerns.
+          </div>
+          <div class="crisis-languages">
+            💬 Call, SMS, or WhatsApp · Hindi, English, Gujarati
+          </div>
+          <a href="tel:9999666555" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call Vandrevala
+          </a>
+          <div class="text-option">
+            <i class="fab fa-whatsapp"></i>
+            WhatsApp: <a href="https://wa.me/919999666555">9999-666-555</a>
+          </div>
+        </div>
+
+        <!-- Tele-MANAS -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">🏥</div>
+            <h3>Tele-MANAS</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:14416">14416</a>
+          </div>
+          <div class="crisis-details">
+            <strong>Government Initiative</strong> connecting you with state-specific trained counselors. Free mental
+            health support and referrals across India.
+          </div>
+          <div class="crisis-languages">
+            📱 Available in English + 20 regional languages
+          </div>
+          <a href="tel:14416" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call Tele-MANAS
+          </a>
+        </div>
+
+        <!-- Fortis -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">⚕️</div>
+            <h3>Fortis Helpline</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:918376804102">+91-8376804102</a>
+          </div>
+          <div class="crisis-details">
+            <strong>24/7 Mental Health Support</strong> by expert psychologists from Fortis Healthcare. Crisis
+            intervention and professional guidance.
+          </div>
+          <div class="crisis-languages">
+            🌐 Multilingual support · Expert clinical team
+          </div>
+          <a href="tel:918376804102" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call Fortis
+          </a>
+        </div>
+
+        <!-- Mpower -->
+        <div class="crisis-card">
+          <div class="crisis-card-header">
+            <div class="crisis-icon">💙</div>
+            <h3>Mpower Minds</h3>
+          </div>
+          <div class="crisis-number">
+            <a href="tel:18001208200">1800-120-8200</a>
+          </div>
+          <div class="crisis-details">
+            <strong>Free 24/7 Counseling</strong> for depression, anxiety, and mental health concerns. Partnership with
+            Mumbai BMC.
+          </div>
+          <div class="crisis-languages">
+            🆓 Toll-free · Confidential support
+          </div>
+          <a href="tel:18001208200" class="call-btn">
+            <i class="fas fa-phone-alt"></i> Call Mpower
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Regional Helplines -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-map-marker-alt"></i>
+        City-Specific Support
+      </div>
+      <h2>Regional Crisis Helplines</h2>
+      <p class="section-intro">Local organizations providing culturally-sensitive support in your area.</p>
+
+      <div class="regional-grid">
+        <div class="regional-card">
+          <div class="regional-city">Mumbai</div>
+          <div class="regional-name">AASRA</div>
+          <div class="regional-number"><a href="tel:9820466726">98204-66726</a></div>
+          <div class="regional-hours">24/7 · Hindi, English, Marathi</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Chennai</div>
+          <div class="regional-name">Jeevan Helpline</div>
+          <div class="regional-number"><a href="tel:04426564444">044-2656-4444</a></div>
+          <div class="regional-hours">24/7 · Tamil, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Mumbai</div>
+          <div class="regional-name">iCall (TISS)</div>
+          <div class="regional-number"><a href="tel:02225521111">022-2552-1111</a></div>
+          <div class="regional-hours">Mon-Sat 8AM-10PM</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Hyderabad</div>
+          <div class="regional-name">1Life</div>
+          <div class="regional-number"><a href="tel:7893078930">78930-78930</a></div>
+          <div class="regional-hours">24/7 · Telugu, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Bangalore</div>
+          <div class="regional-name">SAHAI</div>
+          <div class="regional-number"><a href="tel:08025497777">080-2549-7777</a></div>
+          <div class="regional-hours">Daily · Kannada, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Bangalore</div>
+          <div class="regional-name">Connecting India</div>
+          <div class="regional-number"><a href="tel:9922001122">9922-001-122</a></div>
+          <div class="regional-hours">24/7 · Multiple languages</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Kochi</div>
+          <div class="regional-name">Maithri</div>
+          <div class="regional-number"><a href="tel:914842540530">0484-2540530</a></div>
+          <div class="regional-hours">Daily · Malayalam, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Delhi</div>
+          <div class="regional-name">Sumaitri</div>
+          <div class="regional-number"><a href="tel:01123389090">011-2338-9090</a></div>
+          <div class="regional-hours">2PM-10PM · Hindi, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Kolkata</div>
+          <div class="regional-name">SERVE</div>
+          <div class="regional-number"><a href="tel:9830785060">9830-785-060</a></div>
+          <div class="regional-hours">Daily · Bengali, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Nagpur</div>
+          <div class="regional-name">Suicide Prevention</div>
+          <div class="regional-number"><a href="tel:8888817666">8888-817-666</a></div>
+          <div class="regional-hours">24/7 · Marathi, Hindi</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Goa</div>
+          <div class="regional-name">COOJ</div>
+          <div class="regional-number"><a href="tel:9822562522">9822-562-522</a></div>
+          <div class="regional-hours">Daily · Konkani, English</div>
+        </div>
+
+        <div class="regional-card">
+          <div class="regional-city">Kerala</div>
+          <div class="regional-name">THANAL</div>
+          <div class="regional-number"><a href="tel:04952371100">0495-237-1100</a></div>
+          <div class="regional-hours">Daily · Malayalam</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Immediate Safety Plan -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-shield-alt"></i>
+        Right Now · Immediate Actions
+      </div>
+      <h2>Crisis Safety Plan</h2>
+      <p class="section-intro">If you're experiencing a mental health crisis, follow these steps to keep yourself safe.
+      </p>
+
+      <div class="safety-steps">
+        <div class="safety-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Remove immediate danger</h4>
+            <p>Move away from any means of self-harm. Put physical distance between you and anything that could be
+              dangerous. Go to a safe, comfortable space.</p>
+          </div>
+        </div>
+
+        <div class="safety-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Call a crisis helpline immediately</h4>
+            <p>Dial 1800-599-0019 (KIRAN), 9999-666-555 (Vandrevala), or 112 (Emergency). Trained professionals are
+              available 24/7 to help you through this moment.</p>
+          </div>
+        </div>
+
+        <div class="safety-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Contact someone you trust</h4>
+            <p>Call or message a family member, friend, teacher, or counselor. Don't face this alone—let someone know
+              how you're feeling right now.</p>
+          </div>
+        </div>
+
+        <div class="safety-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Go to a safe environment</h4>
+            <p>Move to a public place, be with others, or go to the nearest hospital emergency department. Being around
+              people can help you feel safer.</p>
+          </div>
+        </div>
+
+        <div class="safety-step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4>Use grounding techniques</h4>
+            <p>Try the 5-4-3-2-1 method: Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste.
+              This helps bring you back to the present moment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Warning Signs -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-exclamation-triangle"></i>
+        Recognition
+      </div>
+      <h2>When to Seek Immediate Help</h2>
+      <p class="section-intro">Reach out for professional support if you or someone you know is experiencing any of
+        these warning signs:</p>
+
+      <div class="warning-list">
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Thoughts of suicide or self-harm</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Making plans to end your life or researching methods</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Feeling trapped, hopeless, or like there's no way out</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Severe anxiety, panic attacks, or overwhelming emotional pain</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Sudden withdrawal from friends, family, or activities you once enjoyed</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Dramatic mood swings or personality changes</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Giving away belongings or saying goodbye in unusual ways</span>
+        </div>
+        <div class="warning-item">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Increased substance use or reckless behavior</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Coping Strategies -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-spa"></i>
+        Self-Care · Distraction Techniques
+      </div>
+      <h2>Immediate Coping Strategies</h2>
+      <p class="section-intro">These techniques can help manage intense emotions while you reach out for support. Try
+        what feels right for you.</p>
+
+      <div class="coping-grid">
+        <div class="coping-card">
+          <div class="coping-icon">🌬️</div>
+          <div class="coping-title">Deep Breathing</div>
+          <div class="coping-desc">4-7-8 technique: Breathe in 4s, hold 7s, exhale 8s</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">🚶</div>
+          <div class="coping-title">Move Your Body</div>
+          <div class="coping-desc">Walk, stretch, or do light exercise to release tension</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">❄️</div>
+          <div class="coping-title">Cold Water</div>
+          <div class="coping-desc">Splash face or hold ice cube to reset nervous system</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">📝</div>
+          <div class="coping-title">Write It Out</div>
+          <div class="coping-desc">Journal your feelings without judgment</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">🎵</div>
+          <div class="coping-title">Calming Music</div>
+          <div class="coping-desc">Listen to soothing sounds or favorite songs</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">🧩</div>
+          <div class="coping-title">Distraction</div>
+          <div class="coping-desc">Puzzle, game, or mindful activity to shift focus</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">☕</div>
+          <div class="coping-title">Comfort Ritual</div>
+          <div class="coping-desc">Tea, warm blanket, favorite comfort item</div>
+        </div>
+
+        <div class="coping-card">
+          <div class="coping-icon">🐾</div>
+          <div class="coping-title">Pet/Nature</div>
+          <div class="coping-desc">Spend time with animals or outdoors</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-question-circle"></i>
+        Common Concerns
+      </div>
+      <h2>Frequently Asked Questions</h2>
+      <p class="section-intro">Answers to questions you might have about reaching out for help.</p>
+
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-question">
+          Is calling a helpline really confidential?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Yes, all crisis helplines maintain strict confidentiality. Your call is private, and counselors will not share
+          your information unless you're in immediate danger and need emergency services. You can also choose to remain
+          anonymous.
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-question">
+          What if I'm not sure if my situation is "serious enough"?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          If you're struggling, that's serious enough. Crisis helplines are here for anyone experiencing distress, not
+          just those in immediate danger. Counselors are trained to help with a wide range of concerns, from acute
+          crisis to emotional support.
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-question">
+          What happens when I call a crisis helpline?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          A trained counselor will answer and listen to what you're going through without judgment. They'll help you
+          work through your feelings, develop a safety plan, and connect you with additional resources if needed. The
+          conversation is led by you—share what you're comfortable with.
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-question">
+          Can I text or WhatsApp instead of calling?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          Yes! Vandrevala Foundation (9999-666-555) accepts calls, SMS, and WhatsApp. KIRAN (1800-599-0019) also has
+          text options. If you're more comfortable texting, that's a completely valid way to reach out.
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="section">
+      <div class="section-label">
+        <i class="fas fa-link"></i>
+        Additional Resources
+      </div>
+      <h2>Continue Your Healing Journey</h2>
+      <p class="section-intro">Connect with ongoing support and resources for long-term wellbeing.</p>
+
+      <div class="action-buttons">
+        <a href="counselors.html" class="action-btn primary">
+          <i class="fas fa-user-md"></i> Find a Counselor
+        </a>
+        <a href="journey.html" class="action-btn secondary">
+          <i class="fas fa-heart"></i> Return to Journey
+        </a>
+        <a href="journal.html" class="action-btn secondary">
+          <i class="fas fa-book"></i> Journal Your Feelings
+        </a>
+        <a href="mood-tracker.html" class="action-btn secondary">
+          <i class="fas fa-smile"></i> Track Your Mood
+        </a>
+      </div>
+    </section>
+
+    <!-- Reassurance -->
+    <div class="reassurance">
+      <h3>💚 You Matter. You Are Valued. You Are Not Alone.</h3>
+      <p>
+        This feeling is temporary, even though it doesn't feel that way right now.
+        You've taken a brave step by coming here. Help is available, recovery is possible,
+        and you deserve support. Your life has value, your pain is real, and reaching out
+        is a sign of strength—not weakness. This moment will pass. Please stay.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Sticky Crisis Banner -->
+  <div class="crisis-sticky-banner">
+    <div class="crisis-sticky-content">
+      <span class="crisis-sticky-text">🆘 In Crisis? Help is available 24/7</span>
+    </div>
+    <div class="crisis-sticky-buttons">
+      <a href="tel:18005990019" class="crisis-call-btn">
+        <i class="fas fa-phone-alt"></i> 1800-599-0019
+      </a>
+      <a href="tel:112" class="crisis-call-btn" style="background:#10b981;color:white;">
+        <i class="fas fa-ambulance"></i> 112
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Auto-scroll to top
+    window.scrollTo(0, 0);
+
+    // Track helpline clicks
+    document.querySelectorAll('.call-btn, .crisis-number a, .regional-number a, .crisis-call-btn').forEach(link => {
+      link.addEventListener('click', function () {
+        console.log('Crisis helpline accessed:', this.textContent.trim());
+      });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,673 @@
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   Add this to all HTML pages for mobile-friendly design
+   ======================================== */
+
+/* Base Mobile Optimizations */
+@media (max-width: 768px) {
+  /* Ensure proper viewport scaling */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  body {
+    font-size: 16px; /* Prevent zoom on input focus */
+    overflow-x: hidden;
+  }
+
+  /* Navigation adjustments */
+  nav {
+    padding: 12px 5% !important;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 1.1rem !important;
+  }
+
+  .logo i {
+    font-size: 1.2rem !important;
+  }
+
+  .nav-center,
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-right {
+    gap: 8px !important;
+  }
+
+  .theme-toggle {
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .theme-toggle span {
+    display: none;
+  }
+
+  .btn-learn {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Hero sections */
+  .hero {
+    min-height: auto !important;
+    padding: 30px 5% !important;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-subtitle,
+  .hero-sub {
+    font-size: 0.95rem !important;
+    max-width: 100% !important;
+  }
+
+  .hero-cta {
+    padding: 14px 32px !important;
+    font-size: 0.95rem !important;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hero-pill-row {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .hero-pill {
+    font-size: 0.7rem !important;
+    padding: 5px 10px !important;
+  }
+
+  .hero-right {
+    max-width: 100%;
+    padding: 14px !important;
+  }
+
+  .hero-illustration {
+    max-width: 100%;
+  }
+
+  .illustration-container {
+    padding: 24px !important;
+  }
+
+  .illustration-svg {
+    max-height: 250px;
+  }
+
+  /* Botanical decorations */
+  .botanical-left,
+  .botanical-right {
+    display: none !important;
+  }
+
+  .mindful-buddies {
+    width: 120px !important;
+    height: 90px !important;
+    bottom: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+
+  /* Features/Cards Grid */
+  .features-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    padding: 20px 5% 100px !important;
+  }
+
+  .feature-card {
+    padding: 20px !important;
+  }
+
+  .feature-icon {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 1.8rem !important;
+  }
+
+  .feature-title {
+    font-size: 1.15rem !important;
+  }
+
+  .feature-desc {
+    font-size: 0.9rem !important;
+  }
+
+  .feature-tag {
+    font-size: 0.75rem !important;
+  }
+
+  /* Buttons */
+  .blue-btn {
+    padding: 10px 20px !important;
+    font-size: 0.85rem !important;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Explore/Icon Strip */
+  .explore-more {
+    padding: 10px 5% 100px !important;
+  }
+
+  .explore-more h2 {
+    font-size: 0.9rem !important;
+  }
+
+  .icon-strip {
+    gap: 12px !important;
+    padding: 10px 0 20px !important;
+  }
+
+  .square-item {
+    min-width: 140px !important;
+    height: 100px !important;
+    padding: 10px 14px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .logo-container {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 1.8rem !important;
+    padding: 0 5%;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem !important;
+    padding: 0 5%;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 60px 5% !important;
+  }
+
+  .cta-title {
+    font-size: 2rem !important;
+  }
+
+  .cta-text {
+    font-size: 0.95rem !important;
+  }
+
+  /* Footer */
+  footer {
+    padding: 30px 5% !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Floating Action Buttons */
+  .sos-floating {
+    width: 52px !important;
+    height: 52px !important;
+    bottom: 80px !important;
+    right: 16px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .ai-fab {
+    width: 50px !important;
+    height: 50px !important;
+    bottom: 145px !important;
+    right: 16px !important;
+  }
+
+  /* Mobile Navigation Bar */
+  .mobile-bar {
+    display: flex !important;
+    padding: 8px 0 10px !important;
+  }
+
+  .nav-item {
+    font-size: 0.65rem !important;
+  }
+
+  .nav-item i {
+    font-size: 1.1rem !important;
+  }
+
+  .sos-circle {
+    width: 46px !important;
+    height: 46px !important;
+    margin-top: -28px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Chatbot/App Container */
+  .app-container {
+    max-width: 100% !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .chat-box {
+    padding: 15px !important;
+    gap: 12px !important;
+  }
+
+  .user-msg,
+  .bot-msg {
+    max-width: 85% !important;
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .input-area {
+    padding: 15px !important;
+    gap: 10px !important;
+  }
+
+  input {
+    padding: 10px 18px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .icon-btn {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 1.1rem !important;
+  }
+
+  /* Popup/Modal adjustments */
+  .popup-content {
+    width: 95% !important;
+    height: 90% !important;
+    border-radius: 20px !important;
+  }
+
+  .popup-header {
+    padding: 16px !important;
+  }
+
+  .popup-header h2 {
+    font-size: 1.1rem !important;
+  }
+
+  .popup-body {
+    padding: 16px !important;
+  }
+
+  .popup-section h3 {
+    font-size: 1rem !important;
+  }
+
+  .popup-section li {
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Calendar adjustments */
+  .mini-cal-grid {
+    gap: 3px !important;
+    font-size: 0.6rem !important;
+  }
+
+  .mini-cal-cell {
+    padding: 4px 0 !important;
+  }
+
+  /* Game pages */
+  .game-container {
+    padding: 15px !important;
+    max-width: 100% !important;
+  }
+
+  .game-header {
+    padding: 12px !important;
+  }
+
+  .game-title {
+    font-size: 1.3rem !important;
+  }
+
+  .game-controls {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .game-btn {
+    padding: 8px 16px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Assessment/Form pages */
+  .assessment-container {
+    padding: 20px 5% !important;
+  }
+
+  .question-card {
+    padding: 18px !important;
+  }
+
+  .question-text {
+    font-size: 0.95rem !important;
+  }
+
+  .option-btn {
+    padding: 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Journal/Mood Tracker */
+  .journal-entry {
+    padding: 16px !important;
+  }
+
+  .mood-selector {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+
+  .mood-emoji {
+    font-size: 2rem !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  textarea {
+    font-size: 0.9rem !important;
+    padding: 12px !important;
+  }
+
+  /* Meditation/Yoga pages */
+  .meditation-card {
+    padding: 16px !important;
+  }
+
+  .timer-display {
+    font-size: 2.5rem !important;
+  }
+
+  .breathing-circle {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  /* Settings page */
+  .settings-section {
+    padding: 16px !important;
+  }
+
+  .settings-option {
+    padding: 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Crisis/Counselor pages */
+  .crisis-card {
+    padding: 16px !important;
+  }
+
+  .helpline-card {
+    padding: 14px !important;
+  }
+
+  .helpline-number {
+    font-size: 1.1rem !important;
+  }
+
+  /* Healing Journey */
+  .journey-map {
+    padding: 20px 5% !important;
+  }
+
+  .journey-node {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 1.5rem !important;
+  }
+
+  .journey-path {
+    stroke-width: 2 !important;
+  }
+
+  /* Pomodoro Timer */
+  .pomodoro-display {
+    font-size: 3rem !important;
+  }
+
+  .pomodoro-controls {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+
+  /* Music Player */
+  .music-player {
+    padding: 16px !important;
+  }
+
+  .album-art {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .track-info {
+    font-size: 0.9rem !important;
+  }
+
+  /* Positivity/Wins */
+  .win-card {
+    padding: 14px !important;
+  }
+
+  .affirmation-text {
+    font-size: 1rem !important;
+  }
+
+  /* Sign-in/Auth pages */
+  .auth-container {
+    padding: 20px 5% !important;
+    max-width: 100% !important;
+  }
+
+  .auth-form {
+    padding: 24px !important;
+  }
+
+  .auth-input {
+    padding: 12px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .auth-btn {
+    padding: 12px !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Utility classes */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: block !important;
+  }
+
+  /* Spacing adjustments */
+  .mt-mobile {
+    margin-top: 20px !important;
+  }
+
+  .mb-mobile {
+    margin-bottom: 20px !important;
+  }
+
+  .px-mobile {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+  }
+}
+
+/* Small mobile devices (phones in portrait) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem !important;
+  }
+
+  .section-title {
+    font-size: 1.5rem !important;
+  }
+
+  .cta-title {
+    font-size: 1.75rem !important;
+  }
+
+  .feature-card {
+    padding: 16px !important;
+  }
+
+  .square-item {
+    min-width: 120px !important;
+    height: 90px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .user-msg,
+  .bot-msg {
+    max-width: 90% !important;
+    font-size: 0.85rem !important;
+  }
+
+  .breathing-circle {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  .timer-display {
+    font-size: 2rem !important;
+  }
+
+  .pomodoro-display {
+    font-size: 2.5rem !important;
+  }
+}
+
+/* Tablet devices (portrait) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  nav {
+    padding: 16px 6% !important;
+  }
+
+  .hero {
+    padding: 40px 6% !important;
+  }
+
+  .hero-title {
+    font-size: 2.5rem !important;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    padding: 24px 6% !important;
+  }
+
+  .explore-more {
+    padding: 16px 6% !important;
+  }
+
+  .cta-section {
+    padding: 80px 6% !important;
+  }
+
+  .botanical-left,
+  .botanical-right {
+    opacity: 0.2 !important;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: auto !important;
+    padding: 20px 5% !important;
+  }
+
+  .hero-title {
+    font-size: 1.5rem !important;
+  }
+
+  .app-container {
+    height: 100vh !important;
+  }
+
+  .breathing-circle {
+    width: 150px !important;
+    height: 150px !important;
+  }
+
+  .mindful-buddies {
+    display: none !important;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase tap targets */
+  button,
+  a,
+  .icon-btn,
+  .theme-toggle,
+  .nav-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  .feature-card:hover,
+  .square-item:hover,
+  .blue-btn:hover {
+    transform: none;
+  }
+
+  /* Add active states instead */
+  .feature-card:active {
+    transform: scale(0.98);
+  }
+
+  .blue-btn:active,
+  .hero-cta:active {
+    transform: scale(0.95);
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp text rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
